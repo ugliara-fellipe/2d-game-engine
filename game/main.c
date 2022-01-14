@@ -1,12 +1,37 @@
-#include "engine.h"
-#include "trace.h"
+/*
+MIT License
+
+Copyright (c) 2022 Fellipe Augusto Ugliara
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+#include "game.h"
+#include "toolbelt/trace.h"
+#include "toolbelt/vector2d.h"
 
 const char *game_name() { return "Game"; }
 
 static SDL_Texture *texture = NULL;
 static int exit_count = 20;
 
-void game_init(engine_t *engine) {
+void game_init() {
   SDL_Surface *bmp = SDL_LoadBMP("assets/grumpy-cat.bmp");
   if (bmp == NULL) {
     trace_error("SDL_LoadBMP Error: %s\n", SDL_GetError());
@@ -22,24 +47,44 @@ void game_init(engine_t *engine) {
     return;
   }
   SDL_FreeSurface(bmp);
+
+  v2d_t v = v2d_init(2, 3);
+  trace_debug("v2d: x: %f y: %f\n", v.x, v.y);
 }
 
-void game_update(engine_t *engine, float delta) {
+void game_process_events(SDL_Event *event) {
+  switch (event->type) {
+  case SDL_KEYDOWN:
+    trace_debug("Key press detected\n");
+    break;
+
+  case SDL_KEYUP:
+    trace_debug("Key release detected\n");
+    break;
+
+  default:
+    break;
+  }
+}
+
+void game_fixed_update(real_t delta) {
+  trace_debug("fixed %f\n", delta);
   if (exit_count == 0) {
     engine->running = false;
   } else {
     exit_count--;
+    SDL_Delay(100);
   }
 }
 
-void game_render(engine_t *engine) {
-  SDL_RenderClear(engine->render);
+void game_variable_update(real_t delta) { trace_debug("variable %f\n", delta); }
+
+void game_render(real_t delta) {
+  trace_debug("render %f\n", delta);
   SDL_RenderCopy(engine->render, texture, NULL, NULL);
-  SDL_RenderPresent(engine->render);
-  SDL_Delay(100);
 }
 
-void game_exit(engine_t *engine) {
+void game_exit() {
   if (texture == NULL) {
     SDL_DestroyTexture(texture);
   }

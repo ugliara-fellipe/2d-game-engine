@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2022 Fellipe Augusto Ugliara
@@ -19,3 +20,20 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#ifndef GAME_H
+#define GAME_H
+
+#include "engine.h"
+#include "toolbelt/maths.h"
+
+extern const char *game_name();
+extern void game_init();
+extern void game_process_events(SDL_Event *event);
+extern void game_fixed_update(real_t delta);
+extern void game_variable_update(real_t delta);
+extern void game_render(real_t delta);
+extern void game_exit();
+
+#endif
