@@ -23,13 +23,11 @@ SOFTWARE.
 */
 
 #include "game.h"
-#include "toolbelt/trace.h"
-#include "toolbelt/vector2d.h"
 
 const char *game_name() { return "Game"; }
 
 static SDL_Texture *texture = NULL;
-static int exit_count = 20;
+static int exit_count = 2000;
 
 void game_init() {
   SDL_Surface *bmp = SDL_LoadBMP("assets/grumpy-cat.bmp");
@@ -60,6 +58,7 @@ void game_process_events(SDL_Event *event) {
 
   case SDL_KEYUP:
     trace_debug("Key release detected\n");
+    engine->running = false;
     break;
 
   default:
@@ -68,19 +67,21 @@ void game_process_events(SDL_Event *event) {
 }
 
 void game_fixed_update(real_t delta) {
-  trace_debug("fixed %f\n", delta);
+  // trace_debug("fixed %f\n", delta);
   if (exit_count == 0) {
     engine->running = false;
   } else {
     exit_count--;
-    SDL_Delay(100);
+    //SDL_Delay(100);
   }
 }
 
-void game_variable_update(real_t delta) { trace_debug("variable %f\n", delta); }
+void game_variable_update(real_t delta) {
+  // trace_debug("variable %f\n", delta);
+}
 
 void game_render(real_t delta) {
-  trace_debug("render %f\n", delta);
+  // trace_debug("render %f\n", delta);
   SDL_RenderCopy(engine->render, texture, NULL, NULL);
 }
 

@@ -31,7 +31,10 @@ engine_t *engine = &(engine_t){.window = NULL,
                                .render = NULL,
                                .running = true,
                                .update_rate = 60,
-                               .timing_resync = true};
+                               .timing_resync = true,
+                               .show_fps = true};
+
+static TTF_Font *engine_font;
 
 static void engine_init() {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -55,18 +58,37 @@ static void engine_init() {
     SDL_Quit();
     exit(EXIT_FAILURE);
   }
+
+  if (TTF_Init() != 0) {
+    trace_crash("TTF_Init Error: %s\n", SDL_GetError());
+    SDL_DestroyRenderer(engine->render);
+    SDL_DestroyWindow(engine->window);
+    SDL_Quit();
+    exit(EXIT_FAILURE);
+  }
+
+  engine_font = TTF_OpenFont("assets/bgroveb.ttf", 24);
+  if (engine_font == NULL) {
+    trace_crash("Font not found, TTF_OpenFont\n");
+    TTF_Quit();
+    SDL_DestroyRenderer(engine->render);
+    SDL_DestroyWindow(engine->window);
+    SDL_Quit();
+    exit(EXIT_FAILURE);
+  }
+}
+
+static void engine_exit() {
+  TTF_Quit();
+  SDL_DestroyRenderer(engine->render);
+  SDL_DestroyWindow(engine->window);
+  SDL_Quit();
 }
 
 static void engine_process_events(SDL_Event *event) {
   while (SDL_PollEvent(event)) {
     game_process_events(event);
   }
-}
-
-static void engine_exit() {
-  SDL_DestroyRenderer(engine->render);
-  SDL_DestroyWindow(engine->window);
-  SDL_Quit();
 }
 
 static real_t timing_calc_fixed_deltatime() {
@@ -162,8 +184,69 @@ static void timing_timer_resync(integer_t *frame_accumulator,
   }
 }
 
+static SDL_mutex *mutex_fps_monitor;
+static integer_t fps_monitor = 0;
+static SDL_TimerID fps_monitor_timer_id;
+static integer_t fps_value_to_present = 0;
+
+static Uint32 engine_present_fps(Uint32 interval, void *param) {
+  integer_t *fps_monitor = (integer_t *)param;
+  if (SDL_LockMutex(mutex_fps_monitor) == 0) {
+    fps_value_to_present = *fps_monitor;
+    *fps_monitor = 0;
+    SDL_UnlockMutex(mutex_fps_monitor);
+  }
+  return interval;
+}
+
+static void engine_fps_monitor_init() {
+  mutex_fps_monitor = SDL_CreateMutex();
+  if (!mutex_fps_monitor) {
+    trace_crash("Couldn't create mutex\n");
+    SDL_DestroyRenderer(engine->render);
+    SDL_DestroyWindow(engine->window);
+    SDL_Quit();
+    exit(EXIT_FAILURE);
+  }
+  fps_monitor_timer_id = SDL_AddTimer(1000, engine_present_fps, &fps_monitor);
+}
+
+static void engine_fps_render() {
+  if (engine->show_fps) {
+    SDL_Color white = {255, 255, 255};
+    char msg[10];
+    sprintf(msg, "fps: %ld", fps_value_to_present);
+    SDL_Surface *surface_message =
+        TTF_RenderText_Solid(engine_font, msg, white);
+    SDL_Texture *message =
+        SDL_CreateTextureFromSurface(engine->render, surface_message);
+    SDL_Rect message_rect;
+    message_rect.x = 10;
+    message_rect.y = 10;
+    message_rect.w = 110;
+    message_rect.h = 50;
+    SDL_RenderCopy(engine->render, message, NULL, &message_rect);
+    SDL_FreeSurface(surface_message);
+    SDL_DestroyTexture(message);
+  }
+}
+
+static void engine_fps_monitor_increase() {
+  if (SDL_LockMutex(mutex_fps_monitor) == 0) {
+    fps_monitor++;
+    SDL_UnlockMutex(mutex_fps_monitor);
+  }
+}
+
+static void engine_fps_monitor_exit() {
+  SDL_RemoveTimer(fps_monitor_timer_id);
+  SDL_DestroyMutex(mutex_fps_monitor);
+}
+
 int main(int argc, char *argv[]) {
   engine_init();
+
+  engine_fps_monitor_init();
 
   game_init();
 
@@ -220,10 +303,14 @@ int main(int argc, char *argv[]) {
 
     SDL_RenderClear(engine->render);
     game_render((real_t)frame_accumulator / desired_frametime);
+    engine_fps_render();
     SDL_RenderPresent(engine->render);
+    engine_fps_monitor_increase();
   }
 
   game_exit();
+
+  engine_fps_monitor_exit();
 
   engine_exit();
 

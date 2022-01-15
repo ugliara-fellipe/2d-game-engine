@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-Isrc -Igame -lSDL2 -lm
+FLAGS=-Isrc -Igame -lSDL2 -lm -lSDL2_ttf
 
 all: env main 
 

@@ -27,6 +27,8 @@ SOFTWARE.
 
 #include "engine.h"
 #include "toolbelt/maths.h"
+#include "toolbelt/trace.h"
+#include "toolbelt/vector2d.h"
 
 extern const char *game_name();
 extern void game_init();
