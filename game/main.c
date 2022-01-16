@@ -27,9 +27,11 @@ SOFTWARE.
 const char *game_name() { return "Game"; }
 
 static SDL_Texture *texture = NULL;
-static int exit_count = 2000;
+static int exit_count = 500;
 
 void game_init() {
+  trace_debug("game_init\n");
+
   SDL_Surface *bmp = SDL_LoadBMP("assets/grumpy-cat.bmp");
   if (bmp == NULL) {
     trace_error("SDL_LoadBMP Error: %s\n", SDL_GetError());
@@ -45,19 +47,16 @@ void game_init() {
     return;
   }
   SDL_FreeSurface(bmp);
-
-  v2d_t v = v2d_init(2, 3);
-  trace_debug("v2d: x: %f y: %f\n", v.x, v.y);
 }
 
 void game_process_events(SDL_Event *event) {
   switch (event->type) {
   case SDL_KEYDOWN:
-    trace_debug("Key press detected\n");
+    trace_debug("game_process_events:  Key press detected\n");
     break;
 
   case SDL_KEYUP:
-    trace_debug("Key release detected\n");
+    trace_debug("game_process_events:  Key release detected\n");
     engine->running = false;
     break;
 
@@ -67,25 +66,26 @@ void game_process_events(SDL_Event *event) {
 }
 
 void game_fixed_update(real_t delta) {
-  // trace_debug("fixed %f\n", delta);
+  trace_debug("game_fixed_update:    delta: %f\n", delta);
   if (exit_count == 0) {
     engine->running = false;
   } else {
     exit_count--;
-    //SDL_Delay(100);
   }
 }
 
 void game_variable_update(real_t delta) {
-  // trace_debug("variable %f\n", delta);
+  trace_debug("game_variable_update: delta: %f\n", delta);
 }
 
 void game_render(real_t delta) {
-  // trace_debug("render %f\n", delta);
+  trace_debug("game_render:          delta: %f\n", delta);
   SDL_RenderCopy(engine->render, texture, NULL, NULL);
 }
 
 void game_exit() {
+  trace_debug("game_exit\n");
+
   if (texture == NULL) {
     SDL_DestroyTexture(texture);
   }

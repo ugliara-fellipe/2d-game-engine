@@ -22,20 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef MONITOR_H
+#define MONITOR_H
 
-#include "engine/engine.h"
 #include "toolbelt/maths.h"
-#include "toolbelt/trace.h"
-#include "toolbelt/vector2d.h"
 
-extern const char *game_name();
-extern void game_init();
-extern void game_process_events(SDL_Event *event);
-extern void game_fixed_update(real_t delta);
-extern void game_variable_update(real_t delta);
-extern void game_render(real_t delta);
-extern void game_exit();
+void monitor_fps_init();
+void monitor_fps_render();
+void monitor_fps_increase();
+void monitor_fps_exit();
+integer_t monitor_get_fps();
 
 #endif

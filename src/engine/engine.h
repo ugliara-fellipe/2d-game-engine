@@ -37,8 +37,10 @@ typedef struct engine_s {
   real_t update_rate;
   bool timing_resync;
   bool show_fps;
+  TTF_Font *font;
 } engine_t;
 
 extern engine_t *engine;
+void engine_exit();
 
 #endif

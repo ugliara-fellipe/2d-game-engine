@@ -22,20 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef TIMING_H
+#define TIMING_H
 
-#include "engine/engine.h"
 #include "toolbelt/maths.h"
-#include "toolbelt/trace.h"
-#include "toolbelt/vector2d.h"
 
-extern const char *game_name();
-extern void game_init();
-extern void game_process_events(SDL_Event *event);
-extern void game_fixed_update(real_t delta);
-extern void game_variable_update(real_t delta);
-extern void game_render(real_t delta);
-extern void game_exit();
+extern real_t fixed_deltatime;
+extern integer_t desired_frametime;
+extern integer_t frame_accumulator;
+extern integer_t consumed_delta_time;
+
+void timing_init();
+void timing_perform();
+
+void timing_consumed_decrease();
+void timing_frame_accumulator_decrease();
 
 #endif

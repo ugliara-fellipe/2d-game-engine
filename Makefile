@@ -7,7 +7,7 @@ env:
 	mkdir -p build
 
 main: 
-	${CC} src/engine.c src/toolbelt/vector2d.c src/toolbelt/maths.c game/main.c ${FLAGS} -o build/game
+	${CC} src/engine/engine.c src/engine/monitor.c src/engine/timing.c src/toolbelt/vector2d.c src/toolbelt/maths.c game/main.c ${FLAGS} -o build/game
 
 clean:
 	rm -r -f build
