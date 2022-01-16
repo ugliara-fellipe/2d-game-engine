@@ -24,11 +24,10 @@ SOFTWARE.
 
 #include "engine/engine.h"
 
-real_t fixed_deltatime;
-integer_t desired_frametime;
-integer_t frame_accumulator;
-integer_t consumed_delta_time;
-
+static real_t fixed_deltatime;
+static integer_t desired_frametime;
+static integer_t frame_accumulator;
+static integer_t consumed_delta_time;
 static integer_t vsync_maxerror;
 static integer_t snap_frequencies[5];
 static integer_t time_history_count;
@@ -142,4 +141,22 @@ void timing_consumed_decrease() { consumed_delta_time -= desired_frametime; }
 
 void timing_frame_accumulator_decrease() {
   frame_accumulator -= desired_frametime;
+}
+
+real_t timing_get_delta_fixed_update() { return fixed_deltatime; }
+
+real_t timing_calc_delta_variable_update() {
+  return (real_t)consumed_delta_time / SDL_GetPerformanceFrequency();
+}
+
+real_t timing_calc_delta_render() {
+  return (real_t)frame_accumulator / desired_frametime;
+}
+
+bool timing_need_delta_split() {
+  return consumed_delta_time > desired_frametime;
+}
+
+bool timing_need_fixed_update() {
+  return frame_accumulator >= desired_frametime;
 }

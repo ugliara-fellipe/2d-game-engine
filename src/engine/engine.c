@@ -107,23 +107,20 @@ int main(int argc, char *argv[]) {
     engine_process_events(&event);
 
     // Update
-    while (frame_accumulator >= desired_frametime) {
+    while (timing_need_fixed_update()) {
       monitor_fps_increase();
-      game_fixed_update(fixed_deltatime);
-      if (consumed_delta_time > desired_frametime) {
-        game_variable_update(fixed_deltatime);
+      game_fixed_update(timing_get_delta_fixed_update());
+      if (timing_need_delta_split()) {
+        game_variable_update(timing_get_delta_fixed_update());
         timing_consumed_decrease();
       }
       timing_frame_accumulator_decrease();
     }
-    real_t delta_update =
-        (real_t)consumed_delta_time / SDL_GetPerformanceFrequency();
-    game_variable_update(delta_update);
+    game_variable_update(timing_calc_delta_variable_update());
 
     // Render
     SDL_RenderClear(engine->render);
-    real_t delta_render = (real_t)frame_accumulator / desired_frametime;
-    game_render(delta_render);
+    game_render(timing_calc_delta_render());
     monitor_fps_render();
     SDL_RenderPresent(engine->render);
   }

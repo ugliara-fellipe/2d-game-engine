@@ -26,16 +26,19 @@ SOFTWARE.
 #define TIMING_H
 
 #include "toolbelt/maths.h"
-
-extern real_t fixed_deltatime;
-extern integer_t desired_frametime;
-extern integer_t frame_accumulator;
-extern integer_t consumed_delta_time;
+#include <stdbool.h>
 
 void timing_init();
 void timing_perform();
 
 void timing_consumed_decrease();
 void timing_frame_accumulator_decrease();
+
+real_t timing_get_delta_fixed_update();
+real_t timing_calc_delta_variable_update();
+real_t timing_calc_delta_render();
+
+bool timing_need_delta_split();
+bool timing_need_fixed_update();
 
 #endif
