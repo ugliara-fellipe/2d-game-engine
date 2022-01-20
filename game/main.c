@@ -27,7 +27,7 @@ SOFTWARE.
 const char *game_name() { return "Game"; }
 
 static SDL_Texture *texture = NULL;
-static int exit_count = 500;
+static int exit_count = 1000;
 
 void game_init() {
   trace_debug("game_init\n");

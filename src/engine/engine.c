@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 #include "engine/engine.h"
+#include "assets/assets.h"
 #include "engine/monitor.h"
 #include "engine/timing.h"
 #include "game.h"
@@ -34,8 +35,7 @@ engine_t *engine = &(engine_t){.window = NULL,
                                .running = true,
                                .update_rate = 60,
                                .timing_resync = true,
-                               .show_fps = true,
-                               .font = NULL};
+                               .show_fps = true};
 
 static void engine_init() {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -64,13 +64,6 @@ static void engine_init() {
     engine_exit();
     exit(EXIT_FAILURE);
   }
-
-  engine->font = TTF_OpenFont("assets/bgroveb.ttf", 24);
-  if (engine->font == NULL) {
-    trace_crash("Font not found, TTF_OpenFont\n");
-    engine_exit();
-    exit(EXIT_FAILURE);
-  }
 }
 
 void engine_exit() {
@@ -95,7 +88,8 @@ static void engine_process_events(SDL_Event *event) {
 int main(int argc, char *argv[]) {
   // Init
   engine_init();
-  monitor_fps_init();
+  assets_init();
+  monitor_init();
   game_init();
   timing_init();
 
@@ -127,7 +121,8 @@ int main(int argc, char *argv[]) {
 
   // Exit
   game_exit();
-  monitor_fps_exit();
+  monitor_exit();
+  assets_exit();
   engine_exit();
   return EXIT_SUCCESS;
 }

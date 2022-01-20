@@ -22,16 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef MONITOR_H
-#define MONITOR_H
+#ifndef TEXT_H
+#define TEXT_H
 
 #include "toolbelt/maths.h"
+#include <SDL2/SDL.h>
+#include <stdarg.h>
 
-void monitor_init();
-void monitor_exit();
-
-void monitor_fps_render();
-void monitor_fps_increase();
-integer_t monitor_get_fps();
+void draw_text(integer_t index, SDL_Rect rect, SDL_Color color,
+               const char *format, ...);
 
 #endif

@@ -21,17 +21,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
-#ifndef MONITOR_H
-#define MONITOR_H
-
-#include "toolbelt/maths.h"
-
-void monitor_init();
-void monitor_exit();
-
-void monitor_fps_render();
-void monitor_fps_increase();
-integer_t monitor_get_fps();
-
-#endif

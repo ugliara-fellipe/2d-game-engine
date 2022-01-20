@@ -22,16 +22,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef MONITOR_H
-#define MONITOR_H
+#include "draw/text.h"
+#include "assets/assets.h"
+#include "engine/engine.h"
 
-#include "toolbelt/maths.h"
-
-void monitor_init();
-void monitor_exit();
-
-void monitor_fps_render();
-void monitor_fps_increase();
-integer_t monitor_get_fps();
-
-#endif
+void draw_text(integer_t index, SDL_Rect rect, SDL_Color color,
+               const char *format, ...) {
+  va_list args;
+  va_start(args, format);
+  char msg[100];
+  vsnprintf(msg, 99, format, args);
+  SDL_Surface *surface_message =
+      TTF_RenderText_Solid(assets->font[index], msg, color);
+  SDL_Texture *message =
+      SDL_CreateTextureFromSurface(engine->render, surface_message);
+  SDL_RenderCopy(engine->render, message, NULL, &rect);
+  SDL_FreeSurface(surface_message);
+  SDL_DestroyTexture(message);
+  va_end(args);
+}
