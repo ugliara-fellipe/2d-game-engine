@@ -95,22 +95,39 @@ int main(int argc, char *argv[]) {
 
   SDL_Event event;
 
+  // Main Loop
   while (engine->running) {
     // Events
     timing_perform();
     engine_process_events(&event);
+    if (!engine->running) {
+      break;
+    }
 
     // Update
     while (timing_need_fixed_update()) {
       monitor_fps_increase();
       game_fixed_update(timing_get_delta_fixed_update());
+      if (!engine->running) {
+        break;
+      }
+
       if (timing_need_delta_split()) {
         game_variable_update(timing_get_delta_fixed_update());
+        if (!engine->running) {
+          break;
+        }
         timing_consumed_decrease();
       }
       timing_frame_accumulator_decrease();
     }
+    if (!engine->running) {
+      break;
+    }
     game_variable_update(timing_calc_delta_variable_update());
+    if (!engine->running) {
+      break;
+    }
 
     // Render
     SDL_RenderClear(engine->render);

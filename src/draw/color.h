@@ -22,5 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "engine/events.h"
+#ifndef COLOR_H
+#define COLOR_H
 
+#define RGB_BLACK (SDL_Color){0, 0, 0}
+#define RGB_WHITE (SDL_Color){255, 255, 255}
+
+#endif

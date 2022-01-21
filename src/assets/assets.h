@@ -26,10 +26,15 @@ SOFTWARE.
 #define ASSETS_H
 
 #include "toolbelt/maths.h"
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#define ASSETS_FONT_LIMIT 10
+#define ASSETS_TEXTURE_LIMIT 30
+
 typedef struct assets_s {
-  TTF_Font *font[10];
+  TTF_Font *font[ASSETS_FONT_LIMIT];
+  SDL_Texture *texture[ASSETS_TEXTURE_LIMIT];
 } assets_t;
 
 extern assets_t *assets;
@@ -41,7 +46,11 @@ void assets_exit();
 void assets_font(integer_t index, const char *file, integer_t ptsize);
 
 // Images
+void assets_texture(integer_t index, const char *bmp_file);
+
 // Sounds
+void assets_audio();
+
 // Config
 // GameData
 // GameSettings

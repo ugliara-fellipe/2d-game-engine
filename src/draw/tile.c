@@ -22,49 +22,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "game.h"
+#include "draw/tile.h"
 
-const char *game_name() { return "Game"; }
-
-static int exit_count = 1000;
-
-void game_init() {
-  trace_debug("game_init\n");
-  assets_texture(0, "assets/grumpy-cat.bmp");
-}
-
-void game_process_events(SDL_Event *event) {
-  switch (event->type) {
-  case SDL_KEYDOWN:
-    trace_debug("game_process_events:  Key press detected\n");
-    break;
-
-  case SDL_KEYUP:
-    trace_debug("game_process_events:  Key release detected\n");
-    engine->running = false;
-    break;
-
-  default:
-    break;
-  }
-}
-
-void game_fixed_update(real_t delta) {
-  trace_debug("game_fixed_update:    delta: %f\n", delta);
-  if (exit_count == 0) {
-    engine->running = false;
-  } else {
-    exit_count--;
-  }
-}
-
-void game_variable_update(real_t delta) {
-  trace_debug("game_variable_update: delta: %f\n", delta);
-}
-
-void game_render(real_t delta) {
-  trace_debug("game_render:          delta: %f\n", delta);
-  SDL_RenderCopy(engine->render, assets->texture[0], NULL, NULL);
-}
-
-void game_exit() { trace_debug("game_exit\n"); }

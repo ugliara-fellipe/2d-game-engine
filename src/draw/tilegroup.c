@@ -22,7 +22,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef TILES_H
-#define TILES_H
+#include "draw/tilegroup.h"
 
-#endif

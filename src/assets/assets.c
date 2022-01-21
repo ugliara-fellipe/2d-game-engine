@@ -28,14 +28,59 @@ SOFTWARE.
 
 assets_t *assets = &(assets_t){};
 
-void assets_init() { assets_font(0, "assets/bgroveb.ttf", 24); }
+void assets_init() {
+  assets_font(0, "assets/pointfree.ttf", 128);
+  for (integer_t index = 0; index < ASSETS_TEXTURE_LIMIT; index++) {
+    assets->texture[index] = NULL;
+  }
+}
 
-void assets_exit() {}
+void assets_exit() {
+  for (integer_t index = 0; index < ASSETS_TEXTURE_LIMIT; index++) {
+    if (assets->texture[index] == NULL) {
+      SDL_DestroyTexture(assets->texture[index]);
+    }
+  }
+}
 
 void assets_font(integer_t index, const char *file, integer_t ptsize) {
+  if (index < 0 || index >= ASSETS_FONT_LIMIT) {
+    trace_crash("Font invalid index\n");
+    engine->running = false;
+    return;
+  }
   assets->font[index] = TTF_OpenFont(file, ptsize);
   if (assets->font[index] == NULL) {
     trace_crash("Font not found, TTF_OpenFont\n");
     engine->running = false;
+    return;
   }
+}
+
+void assets_texture(integer_t index, const char *bmp_file) {
+  if (index < 0 || index >= ASSETS_TEXTURE_LIMIT) {
+    trace_crash("Texture invalid index\n");
+    engine->running = false;
+    return;
+  }
+
+  SDL_Surface *bmp = SDL_LoadBMP(bmp_file);
+  if (bmp == NULL) {
+    trace_error("SDL_LoadBMP Error: %s\n", SDL_GetError());
+    engine->running = false;
+    return;
+  }
+
+  if (assets->texture[index] != NULL) {
+    SDL_DestroyTexture(assets->texture[index]);
+    assets->texture[index] = NULL;
+  }
+  assets->texture[index] = SDL_CreateTextureFromSurface(engine->render, bmp);
+  if (assets->texture[index] == NULL) {
+    trace_error("SDL_CreateTextureFromSurface Error: %s\n", SDL_GetError());
+    SDL_FreeSurface(bmp);
+    engine->running = false;
+    return;
+  }
+  SDL_FreeSurface(bmp);
 }

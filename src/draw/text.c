@@ -26,7 +26,7 @@ SOFTWARE.
 #include "assets/assets.h"
 #include "engine/engine.h"
 
-void draw_text(integer_t index, SDL_Rect rect, SDL_Color color,
+void draw_text(integer_t index, v2d_t position, v2d_t size, SDL_Color color,
                const char *format, ...) {
   va_list args;
   va_start(args, format);
@@ -36,6 +36,7 @@ void draw_text(integer_t index, SDL_Rect rect, SDL_Color color,
       TTF_RenderText_Solid(assets->font[index], msg, color);
   SDL_Texture *message =
       SDL_CreateTextureFromSurface(engine->render, surface_message);
+  SDL_Rect rect = {position.x, position.y, size.x, size.y};
   SDL_RenderCopy(engine->render, message, NULL, &rect);
   SDL_FreeSurface(surface_message);
   SDL_DestroyTexture(message);

@@ -25,11 +25,13 @@ SOFTWARE.
 #ifndef TEXT_H
 #define TEXT_H
 
+#include "draw/color.h"
 #include "toolbelt/maths.h"
+#include "toolbelt/vector2d.h"
 #include <SDL2/SDL.h>
 #include <stdarg.h>
 
-void draw_text(integer_t index, SDL_Rect rect, SDL_Color color,
+void draw_text(integer_t index, v2d_t position, v2d_t size, SDL_Color color,
                const char *format, ...);
 
 #endif

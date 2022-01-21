@@ -25,6 +25,16 @@ SOFTWARE.
 #ifndef GAME_H
 #define GAME_H
 
+#include "assets/assets.h"
+#include "audio/music.h"
+#include "audio/sound.h"
+#include "draw/color.h"
+#include "draw/graphics.h"
+#include "draw/particles.h"
+#include "draw/sprite.h"
+#include "draw/text.h"
+#include "draw/tile.h"
+#include "draw/tilegroup.h"
 #include "engine/engine.h"
 #include "toolbelt/maths.h"
 #include "toolbelt/trace.h"
