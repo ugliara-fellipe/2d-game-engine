@@ -55,7 +55,7 @@ void monitor_init() {
 
 void monitor_fps_render() {
   if (engine->show_fps) {
-    draw_text(0, v2d_init(10, 10), v2d_init(80, 30), RGB_WHITE, "fps: %ld",
+    text_draw(0, v2d_init(10, 10), v2d_init(80, 30), RGB_WHITE, "fps: %ld",
               fps_value_to_present);
   }
 }

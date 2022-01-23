@@ -32,6 +32,9 @@ SOFTWARE.
 #define real_t double
 #define integer_t long
 
+#define sec_t double
+#define msec_t long
+
 #define MATH_PI ((real_t)3.14159265358979323846264338327950288)
 
 // Return the max of two real_t.

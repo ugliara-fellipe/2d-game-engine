@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "engine/engine.h"
 
-static real_t fixed_deltatime;
+static sec_t fixed_deltatime;
 static integer_t desired_frametime;
 static integer_t frame_accumulator;
 static integer_t consumed_delta_time;
@@ -35,9 +35,7 @@ static integer_t time_averager[4];
 static integer_t prev_frame_time;
 static integer_t delta_time;
 
-static real_t timing_calc_fixed_deltatime() {
-  return 1.0 / engine->update_rate;
-}
+static sec_t timing_calc_fixed_deltatime() { return 1.0 / engine->update_rate; }
 
 static integer_t timing_calc_desired_frametime() {
   return SDL_GetPerformanceFrequency() / engine->update_rate;
@@ -143,14 +141,14 @@ void timing_frame_accumulator_decrease() {
   frame_accumulator -= desired_frametime;
 }
 
-real_t timing_get_delta_fixed_update() { return fixed_deltatime; }
+sec_t timing_get_delta_fixed_update() { return fixed_deltatime; }
 
-real_t timing_calc_delta_variable_update() {
-  return (real_t)consumed_delta_time / SDL_GetPerformanceFrequency();
+sec_t timing_calc_delta_variable_update() {
+  return (sec_t)consumed_delta_time / SDL_GetPerformanceFrequency();
 }
 
-real_t timing_calc_delta_render() {
-  return (real_t)frame_accumulator / desired_frametime;
+sec_t timing_calc_delta_render() {
+  return (sec_t)frame_accumulator / desired_frametime;
 }
 
 bool timing_need_delta_split() {

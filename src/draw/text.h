@@ -31,7 +31,7 @@ SOFTWARE.
 #include <SDL2/SDL.h>
 #include <stdarg.h>
 
-void draw_text(integer_t index, v2d_t dst_pos, v2d_t dst_size, SDL_Color color,
+void text_draw(integer_t index, v2d_t dst_pos, v2d_t dst_size, SDL_Color color,
                const char *format, ...);
 
 #endif

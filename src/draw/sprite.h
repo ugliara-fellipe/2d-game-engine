@@ -25,4 +25,29 @@ SOFTWARE.
 #ifndef SPRITE_H
 #define SPRITE_H
 
+#include "assets/assets.h"
+#include "draw/tile.h"
+#include "toolbelt/vector2d.h"
+
+typedef struct sprite_s {
+  tile_t **tile;
+  sec_t *timing;
+  integer_t tile_amount;
+  v2d_t pos;
+  real_t angle_degrees;
+  SDL_RendererFlip flip;
+  integer_t current;
+  sec_t delta;
+} sprite_t;
+
+sprite_t *sprite_init(integer_t tile_amount);
+void sprite_exit(sprite_t *sprite);
+
+void sprite_tile(sprite_t *sprite, integer_t texture_index, v2d_t src_pos,
+                 v2d_t src_size, integer_t sprite_index, sec_t timing);
+
+void sprite_update(sprite_t *sprite, sec_t delta);
+
+void sprite_draw(sprite_t *sprite);
+
 #endif

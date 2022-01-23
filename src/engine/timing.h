@@ -34,9 +34,9 @@ void timing_perform();
 void timing_consumed_decrease();
 void timing_frame_accumulator_decrease();
 
-real_t timing_get_delta_fixed_update();
-real_t timing_calc_delta_variable_update();
-real_t timing_calc_delta_render();
+sec_t timing_get_delta_fixed_update();
+sec_t timing_calc_delta_variable_update();
+sec_t timing_calc_delta_render();
 
 bool timing_need_delta_split();
 bool timing_need_fixed_update();

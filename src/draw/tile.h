@@ -30,12 +30,14 @@ SOFTWARE.
 
 typedef struct tile_s {
   SDL_Texture *texture;
+  v2d_t pos;
+  real_t angle_degrees;
+  SDL_RendererFlip flip;
 } tile_t;
 
 tile_t *tile_init(integer_t texture_index, v2d_t src_pos, v2d_t src_size);
 void tile_exit(tile_t *tile);
 
-void draw_tile(tile_t *tile, v2d_t dst_pos, real_t angle_degrees,
-               SDL_RendererFlip flip);
+void tile_draw(tile_t *tile);
 
 #endif

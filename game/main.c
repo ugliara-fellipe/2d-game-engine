@@ -28,14 +28,19 @@ const char *game_name() { return "Game"; }
 
 static int exit_count = 1000;
 static tile_t *tile = NULL;
-static v2d_t pos;
-static real_t angle = 0;
+static sprite_t *sprite = NULL;
 
 void game_init() {
   trace_debug("game_init\n");
   assets_texture(0, "assets/grumpy-cat.bmp");
-  tile = tile_init(0, v2d_init(100, 100), v2d_init(30, 30));
-  pos = v2d_init(500, 250);
+  tile = tile_init(0, v2d_init(100, 100), v2d_init(60, 60));
+  tile->pos = v2d_init(500, 250);
+
+  sprite = sprite_init(3);
+  sprite_tile(sprite, 0, v2d_init(50, 50), v2d_init(50, 50), 0, 0.4);
+  sprite_tile(sprite, 0, v2d_init(100, 100), v2d_init(50, 50), 1, 0.4);
+  sprite_tile(sprite, 0, v2d_init(150, 150), v2d_init(50, 50), 2, 0.7);
+  sprite->pos = v2d_init(300, 250);
 }
 
 void game_process_events(SDL_Event *event) {
@@ -54,32 +59,37 @@ void game_process_events(SDL_Event *event) {
   }
 }
 
-void game_fixed_update(real_t delta) {
-  trace_debug("game_fixed_update:    delta: %f\n", delta);
+void game_fixed_update(sec_t delta) {
+  trace_debug("game_fixed_update:    delta: %f s\n", delta);
   if (exit_count == 0) {
     engine->running = false;
   } else {
     exit_count--;
-    if (angle < 360) {
-      angle++;
+    if (tile->angle_degrees < 360) {
+      tile->angle_degrees += 2;
+      sprite->angle_degrees += 2;
     } else {
-      angle = 0;
+      tile->angle_degrees = 0;
+      sprite->angle_degrees = 0;
     }
   }
 }
 
-void game_variable_update(real_t delta) {
-  trace_debug("game_variable_update: delta: %f\n", delta);
+void game_variable_update(sec_t delta) {
+  trace_debug("game_variable_update: delta: %f s\n", delta);
+  sprite_update(sprite, delta);
 }
 
-void game_render(real_t delta) {
-  trace_debug("game_render:          delta: %f\n", delta);
+void game_render(sec_t delta) {
+  trace_debug("game_render:          delta: %f s\n", delta);
   SDL_Rect dst_rect = {0, 0, 266, 200};
   SDL_RenderCopy(engine->render, assets->texture[0], NULL, &dst_rect);
-  draw_tile(tile, pos, angle, SDL_FLIP_NONE);
+  tile_draw(tile);
+  sprite_draw(sprite);
 }
 
 void game_exit() {
   tile_exit(tile);
+  sprite_exit(sprite);
   trace_debug("game_exit\n");
 }

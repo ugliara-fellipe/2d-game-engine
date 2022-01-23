@@ -29,7 +29,7 @@ SOFTWARE.
 tile_t *tile_init(integer_t texture_index, v2d_t src_pos, v2d_t src_size) {
   tile_t *tile = calloc(1, sizeof(tile_t));
 
-  // Init tile struct
+  // Init texture
   tile->texture =
       SDL_CreateTexture(engine->render, SDL_PIXELFORMAT_RGBA8888,
                         SDL_TEXTUREACCESS_TARGET, src_size.x, src_size.y);
@@ -47,6 +47,10 @@ tile_t *tile_init(integer_t texture_index, v2d_t src_pos, v2d_t src_size) {
   // Detach the texture
   SDL_SetRenderTarget(engine->render, NULL);
 
+  tile->pos = v2d_zero;
+  tile->angle_degrees = 0;
+  tile->flip = SDL_FLIP_NONE;
+
   return tile;
 }
 
@@ -55,13 +59,12 @@ void tile_exit(tile_t *tile) {
   free(tile);
 }
 
-void draw_tile(tile_t *tile, v2d_t dst_pos, real_t angle_degrees,
-               SDL_RendererFlip flip) {
+void tile_draw(tile_t *tile) {
   int width;
   int height;
   SDL_QueryTexture(tile->texture, NULL, NULL, &width, &height);
 
-  SDL_Rect dst_rect = {dst_pos.x, dst_pos.y, width, height};
+  SDL_Rect dst_rect = {tile->pos.x, tile->pos.y, width, height};
   SDL_RenderCopyEx(engine->render, tile->texture, NULL, &dst_rect,
-                   angle_degrees, NULL, flip);
+                   tile->angle_degrees, NULL, tile->flip);
 }

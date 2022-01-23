@@ -43,9 +43,9 @@ SOFTWARE.
 extern const char *game_name();
 extern void game_init();
 extern void game_process_events(SDL_Event *event);
-extern void game_fixed_update(real_t delta);
-extern void game_variable_update(real_t delta);
-extern void game_render(real_t delta);
+extern void game_fixed_update(sec_t delta);
+extern void game_variable_update(sec_t delta);
+extern void game_render(sec_t delta);
 extern void game_exit();
 
 #endif
