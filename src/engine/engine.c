@@ -44,15 +44,18 @@ static void engine_init() {
   }
 
   engine->window =
-      SDL_CreateWindow(game_name(), 100, 100, 800, 450, SDL_WINDOW_SHOWN);
+      SDL_CreateWindow(game_name(), SDL_WINDOWPOS_CENTERED,
+                       SDL_WINDOWPOS_CENTERED, 800, 450, SDL_WINDOW_SHOWN);
   if (engine->window == NULL) {
     trace_crash("SDL_CreateWindow Error: %s\n", SDL_GetError());
     engine_exit();
     exit(EXIT_FAILURE);
   }
 
-  engine->render = SDL_CreateRenderer(
-      engine->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  engine->render =
+      SDL_CreateRenderer(engine->window, -1,
+                         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |
+                             SDL_RENDERER_TARGETTEXTURE);
   if (engine->render == NULL) {
     trace_crash("SDL_CreateRendetexturerer Error: %s\n", SDL_GetError());
     engine_exit();

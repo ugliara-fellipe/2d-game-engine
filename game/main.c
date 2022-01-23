@@ -27,10 +27,15 @@ SOFTWARE.
 const char *game_name() { return "Game"; }
 
 static int exit_count = 1000;
+static tile_t *tile = NULL;
+static v2d_t pos;
+static real_t angle = 0;
 
 void game_init() {
   trace_debug("game_init\n");
   assets_texture(0, "assets/grumpy-cat.bmp");
+  tile = tile_init(0, v2d_init(100, 100), v2d_init(30, 30));
+  pos = v2d_init(500, 250);
 }
 
 void game_process_events(SDL_Event *event) {
@@ -55,6 +60,11 @@ void game_fixed_update(real_t delta) {
     engine->running = false;
   } else {
     exit_count--;
+    if (angle < 360) {
+      angle++;
+    } else {
+      angle = 0;
+    }
   }
 }
 
@@ -64,7 +74,12 @@ void game_variable_update(real_t delta) {
 
 void game_render(real_t delta) {
   trace_debug("game_render:          delta: %f\n", delta);
-  SDL_RenderCopy(engine->render, assets->texture[0], NULL, NULL);
+  SDL_Rect dst_rect = {0, 0, 266, 200};
+  SDL_RenderCopy(engine->render, assets->texture[0], NULL, &dst_rect);
+  draw_tile(tile, pos, angle, SDL_FLIP_NONE);
 }
 
-void game_exit() { trace_debug("game_exit\n"); }
+void game_exit() {
+  tile_exit(tile);
+  trace_debug("game_exit\n");
+}
