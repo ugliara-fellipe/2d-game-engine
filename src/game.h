@@ -41,6 +41,9 @@ SOFTWARE.
 #include "toolbelt/vector2d.h"
 
 extern const char *game_name();
+extern integer_t game_font_amount();
+extern integer_t game_texture_amount();
+
 extern void game_init();
 extern void game_process_events(SDL_Event *event);
 extern void game_fixed_update(sec_t delta);

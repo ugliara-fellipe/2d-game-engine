@@ -24,27 +24,41 @@ SOFTWARE.
 
 #include "assets/assets.h"
 #include "engine/engine.h"
+#include "game.h"
 #include "toolbelt/trace.h"
 
 assets_t *assets = &(assets_t){};
 
 void assets_init() {
-  assets_font(0, "assets/pointfree.ttf", 128);
-  for (integer_t index = 0; index < ASSETS_TEXTURE_LIMIT; index++) {
+  assets->font = calloc(game_font_amount() + 1, sizeof(TTF_Font *));
+  assets->texture = calloc(game_texture_amount(), sizeof(SDL_Texture *));
+
+  // Load font engine
+  assets->font[game_font_amount()] = TTF_OpenFont("assets/pointfree.ttf", 128);
+  if (assets->font[game_font_amount()] == NULL) {
+    trace_crash("Font not found, TTF_OpenFont\n");
+    engine->running = false;
+    return;
+  }
+
+  // Init texture array
+  for (integer_t index = 0; index < game_texture_amount(); index++) {
     assets->texture[index] = NULL;
   }
 }
 
 void assets_exit() {
-  for (integer_t index = 0; index < ASSETS_TEXTURE_LIMIT; index++) {
+  for (integer_t index = 0; index < game_texture_amount(); index++) {
     if (assets->texture[index] == NULL) {
       SDL_DestroyTexture(assets->texture[index]);
     }
   }
+  free(assets->font);
+  free(assets->texture);
 }
 
 void assets_font(integer_t index, const char *file, integer_t ptsize) {
-  if (index < 0 || index >= ASSETS_FONT_LIMIT) {
+  if (index < 0 || index >= game_font_amount()) {
     trace_crash("Font invalid index\n");
     engine->running = false;
     return;
@@ -58,7 +72,7 @@ void assets_font(integer_t index, const char *file, integer_t ptsize) {
 }
 
 void assets_texture(integer_t index, const char *bmp_file) {
-  if (index < 0 || index >= ASSETS_TEXTURE_LIMIT) {
+  if (index < 0 || index >= game_texture_amount()) {
     trace_crash("Texture invalid index\n");
     engine->running = false;
     return;

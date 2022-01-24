@@ -25,6 +25,8 @@ SOFTWARE.
 #include "game.h"
 
 const char *game_name() { return "Game"; }
+integer_t game_font_amount() {return 0;}
+integer_t game_texture_amount() {return 1;};
 
 static int exit_count = 1000;
 static tile_t *tile = NULL;

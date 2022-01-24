@@ -26,6 +26,7 @@ SOFTWARE.
 #include "assets/assets.h"
 #include "draw/text.h"
 #include "engine/engine.h"
+#include "game.h"
 #include "toolbelt/trace.h"
 
 static SDL_mutex *mutex_fps;
@@ -55,8 +56,8 @@ void monitor_init() {
 
 void monitor_fps_render() {
   if (engine->show_fps) {
-    text_draw(0, v2d_init(10, 10), v2d_init(80, 30), RGB_WHITE, "fps: %ld",
-              fps_value_to_present);
+    text_draw(game_font_amount(), v2d_init(10, 10), v2d_init(80, 30), RGB_WHITE,
+              "fps: %ld", fps_value_to_present);
   }
 }
 

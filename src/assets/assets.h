@@ -29,12 +29,9 @@ SOFTWARE.
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
-#define ASSETS_FONT_LIMIT 10
-#define ASSETS_TEXTURE_LIMIT 30
-
 typedef struct assets_s {
-  TTF_Font *font[ASSETS_FONT_LIMIT];
-  SDL_Texture *texture[ASSETS_TEXTURE_LIMIT];
+  TTF_Font **font;
+  SDL_Texture **texture;
 } assets_t;
 
 extern assets_t *assets;
