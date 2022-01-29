@@ -31,6 +31,7 @@ SOFTWARE.
 typedef struct tile_s {
   SDL_Texture *texture;
   v2d_t pos;
+  v2d_t scala;
   real_t angle_degrees;
   SDL_RendererFlip flip;
 } tile_t;

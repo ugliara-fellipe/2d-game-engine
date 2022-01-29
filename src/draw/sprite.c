@@ -32,6 +32,7 @@ sprite_t *sprite_init(integer_t tile_amount) {
 
   sprite->tile_amount = tile_amount;
   sprite->pos = v2d_zero;
+  sprite->scala = v2d_one;
   sprite->angle_degrees = 0;
   sprite->flip = SDL_FLIP_NONE;
 
@@ -69,6 +70,7 @@ void sprite_update(sprite_t *sprite, sec_t delta) {
 
 void sprite_draw(sprite_t *sprite) {
   sprite->tile[sprite->current]->pos = sprite->pos;
+  sprite->tile[sprite->current]->scala = sprite->scala;
   sprite->tile[sprite->current]->angle_degrees = sprite->angle_degrees;
   sprite->tile[sprite->current]->flip = sprite->flip;
 

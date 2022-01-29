@@ -25,4 +25,24 @@ SOFTWARE.
 #ifndef TILEGROUP_H
 #define TILEGROUP_H
 
+#include "assets/assets.h"
+#include "toolbelt/vector2d.h"
+
+typedef struct tilegroup_s {
+  SDL_Texture *texture;
+  v2d_t pos;
+  v2d_t scala;
+  real_t angle_degrees;
+  SDL_RendererFlip flip;
+} tilegroup_t;
+
+tilegroup_t *tilegroup_init(v2d_t size);
+void tilegroup_exit(tilegroup_t *tilegroup);
+
+void tilegroup_tile(tilegroup_t *tilegroup, integer_t texture_index,
+                    v2d_t src_pos, v2d_t src_size, v2d_t dst_pos, v2d_t scala,
+                    real_t angle_degrees, SDL_RendererFlip flip);
+
+void tilegroup_draw(tilegroup_t *tilegroup);
+
 #endif

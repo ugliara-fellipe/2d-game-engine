@@ -25,12 +25,14 @@ SOFTWARE.
 #include "game.h"
 
 const char *game_name() { return "Game"; }
-integer_t game_font_amount() {return 0;}
-integer_t game_texture_amount() {return 1;};
+integer_t game_font_amount() { return 0; }
+integer_t game_texture_amount() { return 1; };
 
 static int exit_count = 1000;
 static tile_t *tile = NULL;
 static sprite_t *sprite = NULL;
+static tilegroup_t *group = NULL;
+static bool zoom_in = true;
 
 void game_init() {
   trace_debug("game_init\n");
@@ -43,6 +45,14 @@ void game_init() {
   sprite_tile(sprite, 0, v2d_init(100, 100), v2d_init(50, 50), 1, 0.4);
   sprite_tile(sprite, 0, v2d_init(150, 150), v2d_init(50, 50), 2, 0.7);
   sprite->pos = v2d_init(300, 250);
+
+  group = tilegroup_init(v2d_init(100, 100));
+  tilegroup_tile(group, 0, v2d_init(25, 25), v2d_init(50, 50), v2d_zero,
+                 v2d_one, 0, SDL_FLIP_NONE);
+  tilegroup_tile(group, 0, v2d_init(125, 125), v2d_init(75, 75),
+                 v2d_init(25, 25), v2d_one, 0, SDL_FLIP_NONE);
+  group->pos = v2d_init(400, 200);
+  group->flip = SDL_FLIP_VERTICAL;
 }
 
 void game_process_events(SDL_Event *event) {
@@ -70,9 +80,17 @@ void game_fixed_update(sec_t delta) {
     if (tile->angle_degrees < 360) {
       tile->angle_degrees += 2;
       sprite->angle_degrees += 2;
+      group->pos = v2d_add(group->pos, v2d_init(1,-1));
     } else {
       tile->angle_degrees = 0;
       sprite->angle_degrees = 0;
+      group->pos = v2d_init(400, 200);
+      zoom_in = !zoom_in;
+    }
+    if (zoom_in) {
+      tile->scala = v2d_lerp(tile->scala, v2d_init(0.2, 0.2), 0.01);
+    } else {
+      tile->scala = v2d_lerp(tile->scala, v2d_init(4, 4), 0.01);
     }
   }
 }
@@ -86,6 +104,7 @@ void game_render(sec_t delta) {
   trace_debug("game_render:          delta: %f s\n", delta);
   SDL_Rect dst_rect = {0, 0, 266, 200};
   SDL_RenderCopy(engine->render, assets->texture[0], NULL, &dst_rect);
+  tilegroup_draw(group);
   tile_draw(tile);
   sprite_draw(sprite);
 }
@@ -93,5 +112,6 @@ void game_render(sec_t delta) {
 void game_exit() {
   tile_exit(tile);
   sprite_exit(sprite);
+  tilegroup_exit(group);
   trace_debug("game_exit\n");
 }

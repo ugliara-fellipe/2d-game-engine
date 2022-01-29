@@ -26,6 +26,8 @@ SOFTWARE.
 
 v2d_t v2d_zero = {0.0f, 0.0f};
 
+v2d_t v2d_one = {1.0f, 1.0f};
+
 v2d_t v2d_init(const real_t x, const real_t y) { return (v2d_t){x, y}; }
 
 bool v2d_equal(v2d_t v1, v2d_t v2) { return (v1.x == v2.x && v1.y == v2.y); }

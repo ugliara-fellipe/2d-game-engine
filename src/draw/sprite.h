@@ -34,6 +34,7 @@ typedef struct sprite_s {
   sec_t *timing;
   integer_t tile_amount;
   v2d_t pos;
+  v2d_t scala;
   real_t angle_degrees;
   SDL_RendererFlip flip;
   integer_t current;

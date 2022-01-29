@@ -36,6 +36,9 @@ typedef struct v2d_s {
 // Constant for the zero vector
 extern v2d_t v2d_zero;
 
+// Constant for the one vector
+extern v2d_t v2d_one;
+
 // Constructor for v2d structs
 v2d_t v2d_init(const real_t x, const real_t y);
 

@@ -48,6 +48,7 @@ tile_t *tile_init(integer_t texture_index, v2d_t src_pos, v2d_t src_size) {
   SDL_SetRenderTarget(engine->render, NULL);
 
   tile->pos = v2d_zero;
+  tile->scala = v2d_one;
   tile->angle_degrees = 0;
   tile->flip = SDL_FLIP_NONE;
 
@@ -64,7 +65,8 @@ void tile_draw(tile_t *tile) {
   int height;
   SDL_QueryTexture(tile->texture, NULL, NULL, &width, &height);
 
-  SDL_Rect dst_rect = {tile->pos.x, tile->pos.y, width, height};
+  SDL_Rect dst_rect = {tile->pos.x, tile->pos.y, width * tile->scala.x,
+                       height * tile->scala.y};
   SDL_RenderCopyEx(engine->render, tile->texture, NULL, &dst_rect,
                    tile->angle_degrees, NULL, tile->flip);
 }
