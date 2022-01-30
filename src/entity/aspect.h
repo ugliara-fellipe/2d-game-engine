@@ -22,7 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef GRAPHICS_H
-#define GRAPHICS_H
+#ifndef ASPECT_H
+#define ASPECT_H
+
+#include "engine/engine.h"
+#include "toolbelt/maths.h"
+
+typedef struct entity_s entity_t;
+
+typedef struct aspect_s {
+  void *context;
+  void (*process_events)(entity_t *entity, SDL_Event *event);
+  void (*fixed_update)(entity_t *entity, sec_t delta);
+  void (*variable_update)(entity_t *entity, sec_t delta);
+  void (*render)(entity_t *entity, sec_t delta);
+  void (*exit)(void *context);
+} aspect_t;
+
+aspect_t *aspect_init();
+void aspect_exit(aspect_t *aspect);
 
 #endif

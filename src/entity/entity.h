@@ -22,34 +22,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef ENTITY_H
+#define ENTITY_H
 
-#include "assets/assets.h"
-#include "audio/music.h"
-#include "audio/sound.h"
-#include "draw/color.h"
-#include "draw/particles.h"
-#include "draw/sprite.h"
-#include "draw/text.h"
-#include "draw/tile.h"
-#include "draw/tilegroup.h"
 #include "engine/engine.h"
 #include "entity/aspect.h"
-#include "entity/entity.h"
 #include "toolbelt/maths.h"
-#include "toolbelt/trace.h"
-#include "toolbelt/vector2d.h"
 
-extern const char *game_name();
-extern integer_t game_font_amount();
-extern integer_t game_texture_amount();
+struct entity_s {
+  bool enable;
+  bool persist;
+  aspect_t *aspect;
+  entity_t *parent;
+  entity_t **nodes;
+  integer_t nodes_amount;
+};
 
-extern void game_init();
-extern void game_process_events(SDL_Event *event);
-extern void game_fixed_update(sec_t delta);
-extern void game_variable_update(sec_t delta);
-extern void game_render(sec_t delta);
-extern void game_exit();
+entity_t *entity_init(integer_t nodes_amount);
+void entity_exit(entity_t *entity);
+
+void entity_process_events(entity_t *entity, SDL_Event *event);
+void entity_fixed_update(entity_t *entity, sec_t delta);
+void entity_variable_update(entity_t *entity, sec_t delta);
+void entity_render(entity_t *entity, sec_t delta);
+
+void entity_node(entity_t *entity, integer_t index, entity_t *node);
 
 #endif

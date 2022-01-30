@@ -22,5 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "draw/graphics.h"
+#include "entity/aspect.h"
 
+aspect_t *aspect_init() {
+  aspect_t *aspect = calloc(1, sizeof(aspect_t));
+  aspect->context = NULL;
+  aspect->process_events = NULL;
+  aspect->fixed_update = NULL;
+  aspect->variable_update = NULL;
+  aspect->render = NULL;
+  aspect->exit = NULL;
+  return aspect;
+}
+
+void aspect_exit(aspect_t *aspect) {
+  if (aspect->context != NULL && aspect->exit != NULL) {
+    aspect->exit(aspect->context);
+  }
+
+  free(aspect);
+}
