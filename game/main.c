@@ -26,6 +26,8 @@ SOFTWARE.
 
 const char *game_name() { return "Game"; }
 integer_t game_font_amount() { return 0; }
+integer_t game_music_amount() { return 1; }
+integer_t game_sound_amount() { return 1; }
 integer_t game_texture_amount() { return 1; };
 
 static int exit_count = 1000;
@@ -36,6 +38,9 @@ static bool zoom_in = true;
 
 void game_init() {
   trace_debug("game_init\n");
+  assets_music(0, "assets/music.wav");
+  assets_sound(0, "assets/sound.wav");
+
   assets_texture(0, "assets/grumpy-cat.bmp");
   tile = tile_init(0, v2d_init(100, 100), v2d_init(60, 60));
   tile->pos = v2d_init(500, 250);
@@ -53,6 +58,8 @@ void game_init() {
                  v2d_init(25, 25), v2d_one, 0, SDL_FLIP_NONE);
   group->pos = v2d_init(400, 200);
   group->flip = SDL_FLIP_VERTICAL;
+
+  music_play(0);
 }
 
 void game_process_events(SDL_Event *event) {
@@ -80,12 +87,18 @@ void game_fixed_update(sec_t delta) {
     if (tile->angle_degrees < 360) {
       tile->angle_degrees += 2;
       sprite->angle_degrees += 2;
-      group->pos = v2d_add(group->pos, v2d_init(1,-1));
+      group->pos = v2d_add(group->pos, v2d_init(1, -1));
     } else {
       tile->angle_degrees = 0;
       sprite->angle_degrees = 0;
       group->pos = v2d_init(400, 200);
       zoom_in = !zoom_in;
+      if (music_paused()) {
+        music_resume();
+      } else {
+        music_pause();
+      }
+      sound_play(0);
     }
     if (zoom_in) {
       tile->scala = v2d_lerp(tile->scala, v2d_init(0.2, 0.2), 0.01);
@@ -110,6 +123,7 @@ void game_render(sec_t delta) {
 }
 
 void game_exit() {
+  music_stop();
   tile_exit(tile);
   sprite_exit(sprite);
   tilegroup_exit(group);

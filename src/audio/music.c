@@ -21,3 +21,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+#include "audio/music.h"
+
+void music_play(integer_t index) {
+  if (Mix_PlayingMusic() == 0) {
+    Mix_PlayMusic(assets->music[index], -1);
+  }
+}
+
+void music_pause() {
+  if (Mix_PlayingMusic() == 1) {
+    if (Mix_PausedMusic() == 0) {
+      Mix_PauseMusic();
+    }
+  }
+}
+
+void music_resume() {
+  if (Mix_PlayingMusic() == 1) {
+    if (Mix_PausedMusic() == 1) {
+      Mix_ResumeMusic();
+    }
+  }
+}
+
+void music_stop() { Mix_HaltMusic(); }
+
+bool music_playing() { return Mix_PlayingMusic(); }
+
+bool music_paused() { return Mix_PausedMusic(); }

@@ -31,6 +31,7 @@ entity_t *entity_init(integer_t nodes_amount) {
   entity->persist = false;
   entity->aspect = NULL;
   entity->parent = NULL;
+  entity->my_index = -1;
   entity->nodes =
       nodes_amount > 0 ? calloc(nodes_amount, sizeof(entity_t *)) : NULL;
   entity->nodes_amount = nodes_amount;
@@ -112,4 +113,5 @@ void entity_node(entity_t *entity, integer_t index, entity_t *node) {
   }
   entity->nodes[index] = node;
   node->parent = entity;
+  node->my_index = index;
 }

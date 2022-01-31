@@ -21,3 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+#ifndef SOUND_H
+#define SOUND_H
+
+#include "assets/assets.h"
+
+void sound_play(integer_t index);
+
+#endif

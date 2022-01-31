@@ -37,6 +37,8 @@ engine_t *engine = &(engine_t){.window = NULL,
                                .timing_resync = true,
                                .show_fps = true};
 
+static bool Mix_WasInit = false;
+
 static void engine_init() {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     trace_crash("SDL_Init Error: %s\n", SDL_GetError());
@@ -67,9 +69,24 @@ static void engine_init() {
     engine_exit();
     exit(EXIT_FAILURE);
   }
+
+  if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    trace_crash("SDL_mixer could not initialize! SDL_mixer Error: %s\n",
+                Mix_GetError());
+    engine_exit();
+    exit(EXIT_FAILURE);
+  } else {
+    Mix_WasInit = true;
+  }
 }
 
 void engine_exit() {
+  if (Mix_WasInit) {
+    while (Mix_Init(0)) {
+      Mix_Quit();
+    }
+    Mix_CloseAudio();
+  }
   if (TTF_WasInit()) {
     TTF_Quit();
   }

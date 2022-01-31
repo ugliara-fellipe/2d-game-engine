@@ -34,6 +34,7 @@ struct entity_s {
   bool persist;
   aspect_t *aspect;
   entity_t *parent;
+  integer_t my_index;
   entity_t **nodes;
   integer_t nodes_amount;
 };

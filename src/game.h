@@ -43,6 +43,8 @@ SOFTWARE.
 
 extern const char *game_name();
 extern integer_t game_font_amount();
+extern integer_t game_music_amount();
+extern integer_t game_sound_amount();
 extern integer_t game_texture_amount();
 
 extern void game_init();

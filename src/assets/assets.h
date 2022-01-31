@@ -27,10 +27,13 @@ SOFTWARE.
 
 #include "toolbelt/maths.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
 typedef struct assets_s {
   TTF_Font **font;
+  Mix_Music **music;
+  Mix_Chunk **sound;
   SDL_Texture **texture;
 } assets_t;
 
@@ -39,17 +42,16 @@ extern assets_t *assets;
 void assets_init();
 void assets_exit();
 
-// Load fonts
+// Load font ttf
 void assets_font(integer_t index, const char *file, integer_t ptsize);
 
-// Images
+// Load Music wav
+void assets_music(integer_t index, const char *file);
+
+// Load sound wav
+void assets_sound(integer_t index, const char *file);
+
+// Load Image bmp
 void assets_texture(integer_t index, const char *bmp_file);
-
-// Sounds
-void assets_audio();
-
-// Config
-// GameData
-// GameSettings
 
 #endif
