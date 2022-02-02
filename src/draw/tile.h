@@ -26,17 +26,18 @@ SOFTWARE.
 #define TILE_H
 
 #include "assets/assets.h"
+#include "toolbelt/shape.h"
 #include "toolbelt/vector2d.h"
 
 typedef struct tile_s {
   SDL_Texture *texture;
-  v2d_t pos;
+  rect_t rect;
   v2d_t scala;
   real_t angle_degrees;
   SDL_RendererFlip flip;
 } tile_t;
 
-tile_t *tile_init(integer_t texture_index, v2d_t src_pos, v2d_t src_size);
+tile_t *tile_init(integer_t texture_index, rect_t src_rect);
 void tile_exit(tile_t *tile);
 
 void tile_draw(tile_t *tile);

@@ -31,7 +31,7 @@ sprite_t *sprite_init(integer_t tile_amount) {
   sprite->timing = calloc(tile_amount, sizeof(sec_t));
 
   sprite->tile_amount = tile_amount;
-  sprite->pos = v2d_zero;
+  sprite->rect = shape_init_rect(0, 0, 0, 0);
   sprite->scala = v2d_one;
   sprite->angle_degrees = 0;
   sprite->flip = SDL_FLIP_NONE;
@@ -50,9 +50,10 @@ void sprite_exit(sprite_t *sprite) {
   free(sprite);
 }
 
-void sprite_tile(sprite_t *sprite, integer_t texture_index, v2d_t src_pos,
-                 v2d_t src_size, integer_t sprite_index, sec_t timing) {
-  sprite->tile[sprite_index] = tile_init(texture_index, src_pos, src_size);
+void sprite_tile(sprite_t *sprite, integer_t texture_index, rect_t src_rect,
+                 integer_t sprite_index, sec_t timing) {
+  sprite->tile[sprite_index] = tile_init(texture_index, src_rect);
+  sprite->rect = src_rect;
   sprite->timing[sprite_index] = timing;
 }
 
@@ -69,7 +70,7 @@ void sprite_update(sprite_t *sprite, sec_t delta) {
 }
 
 void sprite_draw(sprite_t *sprite) {
-  sprite->tile[sprite->current]->pos = sprite->pos;
+  sprite->tile[sprite->current]->rect = sprite->rect;
   sprite->tile[sprite->current]->scala = sprite->scala;
   sprite->tile[sprite->current]->angle_degrees = sprite->angle_degrees;
   sprite->tile[sprite->current]->flip = sprite->flip;

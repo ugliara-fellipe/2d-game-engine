@@ -27,13 +27,14 @@ SOFTWARE.
 
 #include "assets/assets.h"
 #include "draw/tile.h"
+#include "toolbelt/shape.h"
 #include "toolbelt/vector2d.h"
 
 typedef struct sprite_s {
   tile_t **tile;
   sec_t *timing;
   integer_t tile_amount;
-  v2d_t pos;
+  rect_t rect;
   v2d_t scala;
   real_t angle_degrees;
   SDL_RendererFlip flip;
@@ -44,8 +45,8 @@ typedef struct sprite_s {
 sprite_t *sprite_init(integer_t tile_amount);
 void sprite_exit(sprite_t *sprite);
 
-void sprite_tile(sprite_t *sprite, integer_t texture_index, v2d_t src_pos,
-                 v2d_t src_size, integer_t sprite_index, sec_t timing);
+void sprite_tile(sprite_t *sprite, integer_t texture_index, rect_t src_rect,
+                 integer_t sprite_index, sec_t timing);
 
 void sprite_update(sprite_t *sprite, sec_t delta);
 

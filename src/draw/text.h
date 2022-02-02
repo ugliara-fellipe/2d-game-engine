@@ -27,11 +27,12 @@ SOFTWARE.
 
 #include "draw/color.h"
 #include "toolbelt/maths.h"
+#include "toolbelt/shape.h"
 #include "toolbelt/vector2d.h"
 #include <SDL2/SDL.h>
 #include <stdarg.h>
 
-void text_draw(integer_t index, v2d_t dst_pos, v2d_t dst_size, SDL_Color color,
+void text_draw(integer_t index, rect_t dst_rect, SDL_Color color,
                const char *format, ...);
 
 #endif

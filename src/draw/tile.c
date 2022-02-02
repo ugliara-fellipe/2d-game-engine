@@ -26,28 +26,29 @@ SOFTWARE.
 #include "engine/engine.h"
 #include "toolbelt/trace.h"
 
-tile_t *tile_init(integer_t texture_index, v2d_t src_pos, v2d_t src_size) {
+tile_t *tile_init(integer_t texture_index, rect_t src_rect) {
   tile_t *tile = calloc(1, sizeof(tile_t));
 
   // Init texture
-  tile->texture =
-      SDL_CreateTexture(engine->render, SDL_PIXELFORMAT_RGBA8888,
-                        SDL_TEXTUREACCESS_TARGET, src_size.x, src_size.y);
+  tile->texture = SDL_CreateTexture(engine->render, SDL_PIXELFORMAT_RGBA8888,
+                                    SDL_TEXTUREACCESS_TARGET, src_rect.size.x,
+                                    src_rect.size.y);
 
   // Attach the texture
   SDL_SetRenderTarget(engine->render, tile->texture);
 
   // Now render to the texture
   SDL_RenderClear(engine->render);
-  SDL_Rect src_rect = {src_pos.x, src_pos.y, src_size.x, src_size.y};
-  SDL_Rect dst_rect = {0, 0, src_size.x, src_size.y};
-  SDL_RenderCopy(engine->render, assets->texture[texture_index], &src_rect,
+  SDL_Rect sdl_src_rect = {src_rect.pos_top_left.x, src_rect.pos_top_left.y,
+                       src_rect.size.x, src_rect.size.y};
+  SDL_Rect dst_rect = {0, 0, src_rect.size.x, src_rect.size.y};
+  SDL_RenderCopy(engine->render, assets->texture[texture_index], &sdl_src_rect,
                  &dst_rect);
 
   // Detach the texture
   SDL_SetRenderTarget(engine->render, NULL);
 
-  tile->pos = v2d_zero;
+  tile->rect = shape_init_rect(0, 0, src_rect.size.x, src_rect.size.y);
   tile->scala = v2d_one;
   tile->angle_degrees = 0;
   tile->flip = SDL_FLIP_NONE;
@@ -61,12 +62,9 @@ void tile_exit(tile_t *tile) {
 }
 
 void tile_draw(tile_t *tile) {
-  int width;
-  int height;
-  SDL_QueryTexture(tile->texture, NULL, NULL, &width, &height);
-
-  SDL_Rect dst_rect = {tile->pos.x, tile->pos.y, width * tile->scala.x,
-                       height * tile->scala.y};
+  SDL_Rect dst_rect = {tile->rect.pos_top_left.x, tile->rect.pos_top_left.y,
+                       tile->rect.size.x * tile->scala.x,
+                       tile->rect.size.y * tile->scala.y};
   SDL_RenderCopyEx(engine->render, tile->texture, NULL, &dst_rect,
                    tile->angle_degrees, NULL, tile->flip);
 }

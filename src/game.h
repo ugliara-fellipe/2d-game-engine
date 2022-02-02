@@ -29,6 +29,7 @@ SOFTWARE.
 #include "audio/music.h"
 #include "audio/sound.h"
 #include "draw/color.h"
+#include "draw/graphics.h"
 #include "draw/particles.h"
 #include "draw/sprite.h"
 #include "draw/text.h"
@@ -38,6 +39,7 @@ SOFTWARE.
 #include "entity/aspect.h"
 #include "entity/entity.h"
 #include "toolbelt/maths.h"
+#include "toolbelt/shape.h"
 #include "toolbelt/trace.h"
 #include "toolbelt/vector2d.h"
 

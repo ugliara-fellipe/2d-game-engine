@@ -25,6 +25,8 @@ SOFTWARE.
 #ifndef COLOR_H
 #define COLOR_H
 
+#include <SDL2/SDL.h>
+
 #define RGB_BLACK (SDL_Color){0, 0, 0}
 #define RGB_WHITE (SDL_Color){255, 255, 255}
 

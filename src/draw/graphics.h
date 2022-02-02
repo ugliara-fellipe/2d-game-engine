@@ -22,24 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "draw/text.h"
-#include "assets/assets.h"
-#include "engine/engine.h"
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
 
-void text_draw(integer_t index, rect_t dst_rect, SDL_Color color,
-               const char *format, ...) {
-  va_list args;
-  va_start(args, format);
-  char msg[100];
-  vsnprintf(msg, 99, format, args);
-  SDL_Surface *surface_message =
-      TTF_RenderText_Solid(assets->font[index], msg, color);
-  SDL_Texture *message =
-      SDL_CreateTextureFromSurface(engine->render, surface_message);
-  SDL_Rect rect = {dst_rect.pos_top_left.x, dst_rect.pos_top_left.y, dst_rect.size.x,
-                   dst_rect.size.y};
-  SDL_RenderCopy(engine->render, message, NULL, &rect);
-  SDL_FreeSurface(surface_message);
-  SDL_DestroyTexture(message);
-  va_end(args);
-}
+#include "draw/color.h"
+#include "toolbelt/shape.h"
+#include "toolbelt/vector2d.h"
+
+void point_draw(point_t point, SDL_Color color);
+
+#endif

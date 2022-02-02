@@ -22,24 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "draw/text.h"
-#include "assets/assets.h"
-#include "engine/engine.h"
+#include "toolbelt/shape.h"
 
-void text_draw(integer_t index, rect_t dst_rect, SDL_Color color,
-               const char *format, ...) {
-  va_list args;
-  va_start(args, format);
-  char msg[100];
-  vsnprintf(msg, 99, format, args);
-  SDL_Surface *surface_message =
-      TTF_RenderText_Solid(assets->font[index], msg, color);
-  SDL_Texture *message =
-      SDL_CreateTextureFromSurface(engine->render, surface_message);
-  SDL_Rect rect = {dst_rect.pos_top_left.x, dst_rect.pos_top_left.y, dst_rect.size.x,
-                   dst_rect.size.y};
-  SDL_RenderCopy(engine->render, message, NULL, &rect);
-  SDL_FreeSurface(surface_message);
-  SDL_DestroyTexture(message);
-  va_end(args);
+point_t shape_init_point(real_t x, real_t y) { return (point_t){x, y}; }
+
+circle_t shape_init_circle(real_t x_center, real_t y_center, real_t radius) {
+  return (circle_t){(v2d_t){x_center, y_center}, radius};
+}
+
+rect_t shape_init_rect(real_t x_top_left, real_t y_top_left, real_t width,
+                       real_t height) {
+  return (rect_t){(v2d_t){x_top_left, y_top_left}, (v2d_t){width, height}};
+}
+
+line_t shape_init_line(real_t x_pos_one, real_t y_pos_one, real_t x_pos_two,
+                       real_t y_pos_two) {
+  return (line_t){(v2d_t){x_pos_one, y_pos_one}, (v2d_t){x_pos_two, y_pos_two}};
 }

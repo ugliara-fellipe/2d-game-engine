@@ -37,7 +37,7 @@ tilegroup_t *tilegroup_init(v2d_t size) {
   SDL_RenderClear(engine->render);
   SDL_SetRenderTarget(engine->render, NULL);
 
-  tilegroup->pos = v2d_zero;
+  tilegroup->rect = shape_init_rect(0, 0, size.x, size.y);
   tilegroup->scala = v2d_one;
   tilegroup->angle_degrees = 0;
   tilegroup->flip = SDL_FLIP_NONE;
@@ -51,30 +51,29 @@ void tilegroup_exit(tilegroup_t *tilegroup) {
 }
 
 void tilegroup_tile(tilegroup_t *tilegroup, integer_t texture_index,
-                    v2d_t src_pos, v2d_t src_size, v2d_t dst_pos, v2d_t scala,
+                    rect_t src_rect, v2d_t dst_pos, v2d_t scala,
                     real_t angle_degrees, SDL_RendererFlip flip) {
   // Attach the texture
   SDL_SetRenderTarget(engine->render, tilegroup->texture);
 
   // Now render to the texture
-  SDL_Rect src_rect = {src_pos.x, src_pos.y, src_size.x, src_size.y};
-  SDL_Rect dst_rect = {dst_pos.x, dst_pos.y, src_size.x * scala.x,
-                       src_size.y * scala.y};
+  SDL_Rect sdl_src_rect = {src_rect.pos_top_left.x, src_rect.pos_top_left.y,
+                           src_rect.size.x, src_rect.size.y};
+  SDL_Rect dst_rect = {dst_pos.x, dst_pos.y, src_rect.size.x * scala.x,
+                       src_rect.size.y * scala.y};
 
-  SDL_RenderCopyEx(engine->render, assets->texture[texture_index], &src_rect,
-                   &dst_rect, angle_degrees, NULL, flip);
+  SDL_RenderCopyEx(engine->render, assets->texture[texture_index],
+                   &sdl_src_rect, &dst_rect, angle_degrees, NULL, flip);
 
   // Detach the texture
   SDL_SetRenderTarget(engine->render, NULL);
 }
 
 void tilegroup_draw(tilegroup_t *tilegroup) {
-  int width;
-  int height;
-  SDL_QueryTexture(tilegroup->texture, NULL, NULL, &width, &height);
-
-  SDL_Rect dst_rect = {tilegroup->pos.x, tilegroup->pos.y,
-                       width * tilegroup->scala.x, height * tilegroup->scala.y};
+  SDL_Rect dst_rect = {tilegroup->rect.pos_top_left.x,
+                       tilegroup->rect.pos_top_left.y,
+                       tilegroup->rect.size.x * tilegroup->scala.x,
+                       tilegroup->rect.size.y * tilegroup->scala.y};
   SDL_RenderCopyEx(engine->render, tilegroup->texture, NULL, &dst_rect,
                    tilegroup->angle_degrees, NULL, tilegroup->flip);
 }
