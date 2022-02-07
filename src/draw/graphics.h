@@ -30,5 +30,8 @@ SOFTWARE.
 #include "toolbelt/vector2d.h"
 
 void point_draw(point_t point, SDL_Color color);
+void circle_draw(circle_t circle, SDL_Color color);
+void rect_draw(rect_t rect, SDL_Color color);
+void line_draw(line_t line, SDL_Color color);
 
 #endif

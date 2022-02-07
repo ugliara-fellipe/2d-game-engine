@@ -42,19 +42,19 @@ void game_init() {
   assets_sound(0, "assets/sound.wav");
 
   assets_texture(0, "assets/grumpy-cat.bmp");
-  tile = tile_init(0, shape_init_rect(100, 100, 60, 60));
+  tile = tile_init(0, rect_init(100, 100, 60, 60));
   tile->rect.pos_top_left = v2d_init(500, 250);
 
   sprite = sprite_init(3);
-  sprite_tile(sprite, 0, shape_init_rect(50, 50, 50, 50), 0, 0.4);
-  sprite_tile(sprite, 0, shape_init_rect(100, 100, 50, 50), 1, 0.4);
-  sprite_tile(sprite, 0, shape_init_rect(150, 150, 50, 50), 2, 0.7);
+  sprite_tile(sprite, 0, rect_init(50, 50, 50, 50), 0, 0.4);
+  sprite_tile(sprite, 0, rect_init(100, 100, 50, 50), 1, 0.4);
+  sprite_tile(sprite, 0, rect_init(150, 150, 50, 50), 2, 0.7);
   sprite->rect.pos_top_left = v2d_init(300, 250);
 
   group = tilegroup_init(v2d_init(100, 100));
-  tilegroup_tile(group, 0, shape_init_rect(25, 25, 50, 50), v2d_zero, v2d_one,
+  tilegroup_tile(group, 0, rect_init(25, 25, 50, 50), v2d_zero, v2d_one,
                  0, SDL_FLIP_NONE);
-  tilegroup_tile(group, 0, shape_init_rect(125, 125, 75, 75), v2d_init(25, 25),
+  tilegroup_tile(group, 0, rect_init(125, 125, 75, 75), v2d_init(25, 25),
                  v2d_one, 0, SDL_FLIP_NONE);
   group->rect.pos_top_left = v2d_init(400, 200);
   group->flip = SDL_FLIP_VERTICAL;
@@ -134,7 +134,10 @@ void game_render(sec_t delta) {
   tilegroup_draw(group);
   tile_draw(tile);
   sprite_draw(sprite);
-  point_draw(shape_init_point(100,250), (SDL_Color){255, 255, 255, 255});
+  point_draw(point_init(150,250), RGB_WHITE);
+  circle_draw(circle_init(150,300,15),RGB_WHITE);
+  rect_draw(rect_init(200,220,30,30),RGB_WHITE);
+  line_draw(line_init(300,300,400,400),RGB_WHITE);
 }
 
 void game_exit() {

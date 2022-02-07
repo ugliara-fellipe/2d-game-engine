@@ -31,7 +31,7 @@ sprite_t *sprite_init(integer_t tile_amount) {
   sprite->timing = calloc(tile_amount, sizeof(sec_t));
 
   sprite->tile_amount = tile_amount;
-  sprite->rect = shape_init_rect(0, 0, 0, 0);
+  sprite->rect = rect_init(0, 0, 0, 0);
   sprite->scala = v2d_one;
   sprite->angle_degrees = 0;
   sprite->flip = SDL_FLIP_NONE;

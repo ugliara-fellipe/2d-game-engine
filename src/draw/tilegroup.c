@@ -37,7 +37,7 @@ tilegroup_t *tilegroup_init(v2d_t size) {
   SDL_RenderClear(engine->render);
   SDL_SetRenderTarget(engine->render, NULL);
 
-  tilegroup->rect = shape_init_rect(0, 0, size.x, size.y);
+  tilegroup->rect = rect_init(0, 0, size.x, size.y);
   tilegroup->scala = v2d_one;
   tilegroup->angle_degrees = 0;
   tilegroup->flip = SDL_FLIP_NONE;

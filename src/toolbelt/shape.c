@@ -24,18 +24,18 @@ SOFTWARE.
 
 #include "toolbelt/shape.h"
 
-point_t shape_init_point(real_t x, real_t y) { return (point_t){x, y}; }
+point_t point_init(real_t x, real_t y) { return (point_t){x, y}; }
 
-circle_t shape_init_circle(real_t x_center, real_t y_center, real_t radius) {
+circle_t circle_init(real_t x_center, real_t y_center, real_t radius) {
   return (circle_t){(v2d_t){x_center, y_center}, radius};
 }
 
-rect_t shape_init_rect(real_t x_top_left, real_t y_top_left, real_t width,
+rect_t rect_init(real_t x_top_left, real_t y_top_left, real_t width,
                        real_t height) {
   return (rect_t){(v2d_t){x_top_left, y_top_left}, (v2d_t){width, height}};
 }
 
-line_t shape_init_line(real_t x_pos_one, real_t y_pos_one, real_t x_pos_two,
+line_t line_init(real_t x_pos_one, real_t y_pos_one, real_t x_pos_two,
                        real_t y_pos_two) {
   return (line_t){(v2d_t){x_pos_one, y_pos_one}, (v2d_t){x_pos_two, y_pos_two}};
 }

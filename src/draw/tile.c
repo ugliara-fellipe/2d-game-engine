@@ -48,7 +48,7 @@ tile_t *tile_init(integer_t texture_index, rect_t src_rect) {
   // Detach the texture
   SDL_SetRenderTarget(engine->render, NULL);
 
-  tile->rect = shape_init_rect(0, 0, src_rect.size.x, src_rect.size.y);
+  tile->rect = rect_init(0, 0, src_rect.size.x, src_rect.size.y);
   tile->scala = v2d_one;
   tile->angle_degrees = 0;
   tile->flip = SDL_FLIP_NONE;

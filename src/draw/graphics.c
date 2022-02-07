@@ -27,7 +27,27 @@ SOFTWARE.
 #include <SDL2/SDL2_gfxPrimitives.h>
 
 void point_draw(point_t point, SDL_Color color) {
-  filledCircleRGBA(engine->render, point.x, point.y, 5, color.r, color.g,
+  filledCircleRGBA(engine->render, point.x, point.y, 3, color.r, color.g,
                    color.b, color.a);
+  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, 0xFF);
+}
+
+void circle_draw(circle_t circle, SDL_Color color) {
+  circleRGBA(engine->render, circle.pos_center.x, circle.pos_center.y,
+             circle.radius, color.r, color.g, color.b, color.a);
+  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, 0xFF);
+}
+
+void rect_draw(rect_t rect, SDL_Color color) {
+  rectangleRGBA(engine->render, rect.pos_top_left.x, rect.pos_top_left.y,
+                rect.pos_top_left.x + rect.size.x,
+                rect.pos_top_left.y + rect.size.y, color.r, color.g, color.b,
+                color.a);
+  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, 0xFF);
+}
+
+void line_draw(line_t line, SDL_Color color) {
+  lineRGBA(engine->render, line.pos_one.x, line.pos_one.y, line.pos_two.x,
+           line.pos_two.y, color.r, color.g, color.b, color.a);
   SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, 0xFF);
 }
