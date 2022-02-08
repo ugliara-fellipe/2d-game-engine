@@ -5,7 +5,8 @@ SRC=src/assets/assets.c src/entity/entity.c src/entity/aspect.c \
     src/draw/text.c src/draw/tile.c src/audio/music.c src/audio/sound.c\
 	src/draw/sprite.c src/draw/tilegroup.c src/engine/engine.c \
 	src/engine/monitor.c src/engine/timing.c src/toolbelt/vector2d.c \
-	src/toolbelt/maths.c src/toolbelt/shape.c game/main.c src/draw/graphics.c
+	src/toolbelt/maths.c src/toolbelt/shape.c game/main.c src/draw/graphics.c \
+	src/collision/collision.c
 
 all: env main 
 

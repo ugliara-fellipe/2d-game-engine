@@ -30,4 +30,8 @@ SOFTWARE.
 #define RGB_BLACK (SDL_Color){0, 0, 0, 255}
 #define RGB_WHITE (SDL_Color){255, 255, 255, 255}
 
+#define RGB_RED   (SDL_Color){255, 0, 0, 255}
+#define RGB_GREEN (SDL_Color){0, 255, 0, 255}
+#define RGB_BLUE  (SDL_Color){0, 0, 255, 255}
+
 #endif

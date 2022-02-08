@@ -36,9 +36,13 @@ v2d_t v2d_add(v2d_t v1, v2d_t v2) { return v2d_init(v1.x + v2.x, v1.y + v2.y); }
 
 v2d_t v2d_sub(v2d_t v1, v2d_t v2) { return v2d_init(v1.x - v2.x, v1.y - v2.y); }
 
+v2d_t v2d_mult(v2d_t v1, v2d_t v2) {
+  return v2d_init(v1.x * v2.x, v1.y * v2.y);
+}
+
 v2d_t v2d_neg(v2d_t v) { return v2d_init(-v.x, -v.y); }
 
-v2d_t v2d_mult(v2d_t v, real_t s) { return v2d_init(v.x * s, v.y * s); }
+v2d_t v2d_mult_sclr(v2d_t v, real_t s) { return v2d_init(v.x * s, v.y * s); }
 
 real_t v2d_dot(v2d_t v1, v2d_t v2) { return (v1.x * v2.x + v1.y * v2.y); }
 
@@ -49,7 +53,7 @@ v2d_t v2d_perp(v2d_t v) { return v2d_init(-v.y, v.x); }
 v2d_t v2d_rperp(v2d_t v) { return v2d_init(v.y, -v.x); }
 
 v2d_t v2d_project(v2d_t v1, v2d_t v2) {
-  return v2d_mult(v2, v2d_dot(v1, v2) / v2d_dot(v2, v2));
+  return v2d_mult_sclr(v2, v2d_dot(v1, v2) / v2d_dot(v2, v2));
 }
 
 v2d_t v2d_forangle(real_t a) { return v2d_init(cos(a), sin(a)); }
@@ -69,12 +73,12 @@ real_t v2d_lengthsq(v2d_t v) { return v2d_dot(v, v); }
 real_t v2d_length(v2d_t v) { return sqrt(v2d_dot(v, v)); }
 
 v2d_t v2d_lerp(v2d_t v1, v2d_t v2, real_t t) {
-  return v2d_add(v2d_mult(v1, 1.0f - t), v2d_mult(v2, t));
+  return v2d_add(v2d_mult_sclr(v1, 1.0f - t), v2d_mult_sclr(v2, t));
 }
 
 v2d_t v2d_normalize(v2d_t v) {
   // Neat trick I saw somewhere to avoid div/0
-  return v2d_mult(v, 1.0f / (v2d_length(v) + DBL_MIN));
+  return v2d_mult_sclr(v, 1.0f / (v2d_length(v) + DBL_MIN));
 }
 
 v2d_t v2d_slerp(v2d_t v1, v2d_t v2, real_t t) {
@@ -85,8 +89,8 @@ v2d_t v2d_slerp(v2d_t v1, v2d_t v2, real_t t) {
     return v2d_lerp(v1, v2, t);
   } else {
     real_t denom = 1.0f / sin(omega);
-    return v2d_add(v2d_mult(v1, sin((1.0f - t) * omega) * denom),
-                   v2d_mult(v2, sin(t * omega) * denom));
+    return v2d_add(v2d_mult_sclr(v1, sin((1.0f - t) * omega) * denom),
+                   v2d_mult_sclr(v2, sin(t * omega) * denom));
   }
 }
 
@@ -98,7 +102,7 @@ v2d_t v2d_slerpconst(v2d_t v1, v2d_t v2, real_t a) {
 }
 
 v2d_t v2d_clamp(v2d_t v, real_t len) {
-  return (v2d_dot(v, v) > len * len) ? v2d_mult(v2d_normalize(v), len) : v;
+  return (v2d_dot(v, v) > len * len) ? v2d_mult_sclr(v2d_normalize(v), len) : v;
 }
 
 v2d_t v2d_lerpconst(v2d_t v1, v2d_t v2, real_t d) {

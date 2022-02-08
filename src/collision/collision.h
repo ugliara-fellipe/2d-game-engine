@@ -22,39 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef COLLISION_H
+#define COLLISION_H
 
-#include "assets/assets.h"
-#include "audio/music.h"
-#include "audio/sound.h"
-#include "collision/collision.h"
-#include "draw/color.h"
-#include "draw/graphics.h"
-#include "draw/particles.h"
-#include "draw/sprite.h"
-#include "draw/text.h"
-#include "draw/tile.h"
-#include "draw/tilegroup.h"
-#include "engine/engine.h"
-#include "entity/aspect.h"
-#include "entity/entity.h"
-#include "toolbelt/maths.h"
 #include "toolbelt/shape.h"
-#include "toolbelt/trace.h"
 #include "toolbelt/vector2d.h"
 
-extern const char *game_name();
-extern integer_t game_font_amount();
-extern integer_t game_music_amount();
-extern integer_t game_sound_amount();
-extern integer_t game_texture_amount();
-
-extern void game_init();
-extern void game_process_events(SDL_Event *event);
-extern void game_fixed_update(sec_t delta);
-extern void game_variable_update(sec_t delta);
-extern void game_render(sec_t delta);
-extern void game_exit();
+bool collision_point_point(point_t p1, point_t p2);
+bool collision_point_circle(point_t p, circle_t c);
+bool collision_circle_circle(circle_t c1, circle_t c2);
+bool collision_point_rect(point_t p, rect_t r);
+bool collision_rect_rect(rect_t r1, rect_t r2);
+bool collision_circle_rect(circle_t c, rect_t r);
+bool collision_line_point(line_t l, point_t p);
+bool collision_line_circle(line_t l, circle_t c);
+bool collision_line_line(line_t l1, line_t l2);
+bool collision_line_rect(line_t l, rect_t r);
 
 #endif

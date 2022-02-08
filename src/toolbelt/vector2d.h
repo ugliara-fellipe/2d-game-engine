@@ -51,11 +51,14 @@ v2d_t v2d_add(v2d_t v1, v2d_t v2);
 // Subtract two vectors
 v2d_t v2d_sub(v2d_t v1, v2d_t v2);
 
+// Multiplication two vectors
+v2d_t v2d_mult(v2d_t v1, v2d_t v2);
+
 // Negate a vector
 v2d_t v2d_neg(v2d_t v);
 
 // Scalar multiplication
-v2d_t v2d_mult(v2d_t v, real_t s);
+v2d_t v2d_mult_sclr(v2d_t v, real_t s);
 
 // Vector dot product
 real_t v2d_dot(v2d_t v1, v2d_t v2);

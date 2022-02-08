@@ -52,8 +52,8 @@ void game_init() {
   sprite->rect.pos_top_left = v2d_init(300, 250);
 
   group = tilegroup_init(v2d_init(100, 100));
-  tilegroup_tile(group, 0, rect_init(25, 25, 50, 50), v2d_zero, v2d_one,
-                 0, SDL_FLIP_NONE);
+  tilegroup_tile(group, 0, rect_init(25, 25, 50, 50), v2d_zero, v2d_one, 0,
+                 SDL_FLIP_NONE);
   tilegroup_tile(group, 0, rect_init(125, 125, 75, 75), v2d_init(25, 25),
                  v2d_one, 0, SDL_FLIP_NONE);
   group->rect.pos_top_left = v2d_init(400, 200);
@@ -134,10 +134,30 @@ void game_render(sec_t delta) {
   tilegroup_draw(group);
   tile_draw(tile);
   sprite_draw(sprite);
-  point_draw(point_init(150,250), RGB_WHITE);
-  circle_draw(circle_init(150,300,15),RGB_WHITE);
-  rect_draw(rect_init(200,220,30,30),RGB_WHITE);
-  line_draw(line_init(300,300,400,400),RGB_WHITE);
+
+  if (collision_point_rect(point_init(150, 250), sprite->rect)) {
+    point_draw(point_init(150, 250), RGB_RED);
+  } else {
+    point_draw(point_init(150, 250), RGB_WHITE);
+  }
+
+  if (collision_circle_rect(circle_init(150, 300, 15), sprite->rect)) {
+    circle_draw(circle_init(150, 300, 15), RGB_RED);
+  } else {
+    circle_draw(circle_init(150, 300, 15), RGB_WHITE);
+  }
+
+  if (collision_rect_rect(rect_init(200, 220, 30, 30), sprite->rect)) {
+    rect_draw(rect_init(200, 220, 30, 30), RGB_RED);
+  } else {
+    rect_draw(rect_init(200, 220, 30, 30), RGB_WHITE);
+  }
+
+  if (collision_line_rect(line_init(300, 300, 400, 400), sprite->rect)) {
+    line_draw(line_init(300, 300, 400, 400), RGB_RED);
+  } else {
+    line_draw(line_init(300, 300, 400, 400), RGB_WHITE);
+  }
 }
 
 void game_exit() {
