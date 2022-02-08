@@ -114,7 +114,7 @@ bool collision_line_circle(line_t l, circle_t c) {
 
   v2d_t dot_tmp =
       v2d_mult(v2d_sub(c.pos_center, l.pos_one), v2d_sub(l.pos_two, l.pos_one));
-  real_t dot = dot_tmp.x + dot_tmp.y / (len * len);
+  real_t dot = (dot_tmp.x + dot_tmp.y) / (len * len);
 
   v2d_t closest =
       v2d_add(l.pos_one, v2d_mult_sclr(v2d_sub(l.pos_two, l.pos_one), dot));

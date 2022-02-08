@@ -158,6 +158,10 @@ void game_render(sec_t delta) {
   } else {
     line_draw(line_init(300, 300, 400, 400), RGB_WHITE);
   }
+
+  if (collision_line_circle(line_init(300, 300, 400, 400), circle_init(350,350,30))) {
+    circle_draw(circle_init(350, 350, 30), RGB_RED);
+  }
 }
 
 void game_exit() {
