@@ -52,8 +52,8 @@ entity_t *level_init() {
   level_t *context = calloc(1, sizeof(level_t));
   context->map[0] = line_init(10, 10, 10, h - 10);
   context->map[1] = line_init(10, h - 10, w - 10 - 100, h - 10);
-  context->map[2] = line_init(w - 10 - 100, h - 10, w - 10 - 100, h - 10 - 100);
-  context->map[3] = line_init(w - 10 - 100, h - 10 - 100, w - 10, h - 10 - 100);
+  context->map[2] = line_init(w - 10 - 100, h - 10, w - 10 - 100, h - 10 - 100 + 3);
+  context->map[3] = line_init(w - 10 - 100 + 3, h - 10 - 100, w - 10, h - 10 - 100);
   context->map[4] = line_init(w - 10, h - 10 - 100, w - 10, 10);
   context->map[5] = line_init(w - 10, 10, 10, 10);
   level->aspect->context = context;

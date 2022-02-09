@@ -52,9 +52,9 @@ static void fixed_update(entity_t *entity, sec_t delta) {
 
   level_t *level = entity->parent->nodes[0]->aspect->context;
   if ((!collision_line_rect(level->map[1], player->body) &&
-      !collision_line_rect(level->map[3], player->body)) &&
+       !collision_line_rect(level->map[3], player->body)) &&
       player->direction.y == 0) {
-    temp = v2d_add(temp, v2d_init(0, speed));
+    temp.y = temp.y + speed;
   }
   if (collision_line_rect(level->map[5], player->body) &&
       player->direction.y == -speed) {
@@ -77,8 +77,10 @@ static void variable_update(entity_t *entity, sec_t delta) {}
 
 static void render(entity_t *entity, sec_t delta) {
   player_t *player = entity->aspect->context;
-
-  rect_draw(player->body, RGB_WHITE);
+  rect_t body = player->body;
+  body.size.x -= 1;
+  body.size.y -= 1;
+  rect_draw(body, RGB_WHITE);
 }
 
 static void finish(void *context) {}

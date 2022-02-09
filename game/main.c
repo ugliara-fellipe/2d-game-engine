@@ -112,32 +112,32 @@ void game_variable_update(sec_t delta) {
 
 void game_render(sec_t delta) {
   trace_debug("game_render:          delta: %f s\n", delta);
-  entity_render(scene, delta);
+  player_t *player = scene->nodes[1]->aspect->context;
   SDL_Rect dst_rect = {0, 0, 266, 200};
   SDL_RenderCopy(engine->render, assets->texture[0], NULL, &dst_rect);
   tilegroup_draw(group);
   tile_draw(tile);
   sprite_draw(sprite);
 
-  if (collision_point_rect(point_init(150, 250), sprite->rect)) {
+  if (collision_point_rect(point_init(150, 250), player->body)) {
     point_draw(point_init(150, 250), RGB_RED);
   } else {
     point_draw(point_init(150, 250), RGB_WHITE);
   }
 
-  if (collision_circle_rect(circle_init(150, 300, 15), sprite->rect)) {
+  if (collision_circle_rect(circle_init(150, 300, 15), player->body)) {
     circle_draw(circle_init(150, 300, 15), RGB_RED);
   } else {
     circle_draw(circle_init(150, 300, 15), RGB_WHITE);
   }
 
-  if (collision_rect_rect(rect_init(200, 220, 30, 30), sprite->rect)) {
+  if (collision_rect_rect(rect_init(200, 220, 30, 30), player->body)) {
     rect_draw(rect_init(200, 220, 30, 30), RGB_RED);
   } else {
     rect_draw(rect_init(200, 220, 30, 30), RGB_WHITE);
   }
 
-  if (collision_line_rect(line_init(300, 300, 400, 400), sprite->rect)) {
+  if (collision_line_rect(line_init(300, 300, 400, 400), player->body)) {
     line_draw(line_init(300, 300, 400, 400), RGB_RED);
   } else {
     line_draw(line_init(300, 300, 400, 400), RGB_WHITE);
@@ -145,13 +145,16 @@ void game_render(sec_t delta) {
 
   if (collision_line_circle(line_init(300, 300, 400, 400),
                             circle_init(350, 350, 30))) {
-    circle_draw(circle_init(350, 350, 30), RGB_RED);
+    circle_draw(circle_init(350, 350, 30), RGB_BLUE);
   }
 
   if (collision_line_line(line_init(300, 300, 400, 400),
                           line_init(300, 400, 400, 300))) {
     line_draw(line_init(300, 400, 400, 300), RGB_GREEN);
   }
+
+  text_draw(0, rect_init(30, 410, 200, 20), RGB_WHITE, "Press < q > to exit");
+  entity_render(scene, delta);
 }
 
 void game_exit() {
