@@ -30,25 +30,25 @@ tile_t *tile_init(integer_t texture_index, rect_t src_rect) {
   tile_t *tile = calloc(1, sizeof(tile_t));
 
   // Init texture
-  tile->texture = SDL_CreateTexture(engine->render, SDL_PIXELFORMAT_RGBA8888,
-                                    SDL_TEXTUREACCESS_TARGET, src_rect.size.x,
-                                    src_rect.size.y);
+  tile->texture =
+      SDL_CreateTexture(engine->render, SDL_PIXELFORMAT_RGBA8888,
+                        SDL_TEXTUREACCESS_TARGET, src_rect.s.x, src_rect.s.y);
 
   // Attach the texture
   SDL_SetRenderTarget(engine->render, tile->texture);
 
   // Now render to the texture
   SDL_RenderClear(engine->render);
-  SDL_Rect sdl_src_rect = {src_rect.pos_top_left.x, src_rect.pos_top_left.y,
-                       src_rect.size.x, src_rect.size.y};
-  SDL_Rect dst_rect = {0, 0, src_rect.size.x, src_rect.size.y};
+  SDL_Rect sdl_src_rect = {src_rect.ptl.x, src_rect.ptl.y, src_rect.s.x,
+                           src_rect.s.y};
+  SDL_Rect dst_rect = {0, 0, src_rect.s.x, src_rect.s.y};
   SDL_RenderCopy(engine->render, assets->texture[texture_index], &sdl_src_rect,
                  &dst_rect);
 
   // Detach the texture
   SDL_SetRenderTarget(engine->render, NULL);
 
-  tile->rect = rect_init(0, 0, src_rect.size.x, src_rect.size.y);
+  tile->rect = rect_init(0, 0, src_rect.s.x, src_rect.s.y);
   tile->scala = v2d_one;
   tile->angle_degrees = 0;
   tile->flip = SDL_FLIP_NONE;
@@ -62,9 +62,9 @@ void tile_exit(tile_t *tile) {
 }
 
 void tile_draw(tile_t *tile) {
-  SDL_Rect dst_rect = {tile->rect.pos_top_left.x, tile->rect.pos_top_left.y,
-                       tile->rect.size.x * tile->scala.x,
-                       tile->rect.size.y * tile->scala.y};
+  SDL_Rect dst_rect = {tile->rect.ptl.x, tile->rect.ptl.y,
+                       tile->rect.s.x * tile->scala.x,
+                       tile->rect.s.y * tile->scala.y};
   SDL_RenderCopyEx(engine->render, tile->texture, NULL, &dst_rect,
                    tile->angle_degrees, NULL, tile->flip);
 }

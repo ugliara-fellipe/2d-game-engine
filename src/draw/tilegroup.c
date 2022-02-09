@@ -57,10 +57,10 @@ void tilegroup_tile(tilegroup_t *tilegroup, integer_t texture_index,
   SDL_SetRenderTarget(engine->render, tilegroup->texture);
 
   // Now render to the texture
-  SDL_Rect sdl_src_rect = {src_rect.pos_top_left.x, src_rect.pos_top_left.y,
-                           src_rect.size.x, src_rect.size.y};
-  SDL_Rect dst_rect = {dst_pos.x, dst_pos.y, src_rect.size.x * scala.x,
-                       src_rect.size.y * scala.y};
+  SDL_Rect sdl_src_rect = {src_rect.ptl.x, src_rect.ptl.y, src_rect.s.x,
+                           src_rect.s.y};
+  SDL_Rect dst_rect = {dst_pos.x, dst_pos.y, src_rect.s.x * scala.x,
+                       src_rect.s.y * scala.y};
 
   SDL_RenderCopyEx(engine->render, assets->texture[texture_index],
                    &sdl_src_rect, &dst_rect, angle_degrees, NULL, flip);
@@ -70,10 +70,9 @@ void tilegroup_tile(tilegroup_t *tilegroup, integer_t texture_index,
 }
 
 void tilegroup_draw(tilegroup_t *tilegroup) {
-  SDL_Rect dst_rect = {tilegroup->rect.pos_top_left.x,
-                       tilegroup->rect.pos_top_left.y,
-                       tilegroup->rect.size.x * tilegroup->scala.x,
-                       tilegroup->rect.size.y * tilegroup->scala.y};
+  SDL_Rect dst_rect = {tilegroup->rect.ptl.x, tilegroup->rect.ptl.y,
+                       tilegroup->rect.s.x * tilegroup->scala.x,
+                       tilegroup->rect.s.y * tilegroup->scala.y};
   SDL_RenderCopyEx(engine->render, tilegroup->texture, NULL, &dst_rect,
                    tilegroup->angle_degrees, NULL, tilegroup->flip);
 }

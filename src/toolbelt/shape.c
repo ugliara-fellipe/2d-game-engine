@@ -26,16 +26,14 @@ SOFTWARE.
 
 point_t point_init(real_t x, real_t y) { return (point_t){x, y}; }
 
-circle_t circle_init(real_t x_center, real_t y_center, real_t radius) {
-  return (circle_t){(v2d_t){x_center, y_center}, radius};
+circle_t circle_init(real_t cx, real_t cy, real_t r) {
+  return (circle_t){(v2d_t){cx, cy}, r};
 }
 
-rect_t rect_init(real_t x_top_left, real_t y_top_left, real_t width,
-                       real_t height) {
-  return (rect_t){(v2d_t){x_top_left, y_top_left}, (v2d_t){width, height}};
+rect_t rect_init(real_t ptlx, real_t ptly, real_t w, real_t h) {
+  return (rect_t){(v2d_t){ptlx, ptly}, (v2d_t){w, h}};
 }
 
-line_t line_init(real_t x_pos_one, real_t y_pos_one, real_t x_pos_two,
-                       real_t y_pos_two) {
-  return (line_t){(v2d_t){x_pos_one, y_pos_one}, (v2d_t){x_pos_two, y_pos_two}};
+line_t line_init(real_t p1x, real_t p1y, real_t p2x, real_t p2y) {
+  return (line_t){(v2d_t){p1x, p1y}, (v2d_t){p2x, p2y}};
 }

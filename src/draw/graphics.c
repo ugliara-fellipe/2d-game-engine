@@ -33,21 +33,19 @@ void point_draw(point_t point, SDL_Color color) {
 }
 
 void circle_draw(circle_t circle, SDL_Color color) {
-  circleRGBA(engine->render, circle.pos_center.x, circle.pos_center.y,
-             circle.radius, color.r, color.g, color.b, color.a);
+  circleRGBA(engine->render, circle.c.x, circle.c.y, circle.r, color.r, color.g,
+             color.b, color.a);
   SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, 0xFF);
 }
 
 void rect_draw(rect_t rect, SDL_Color color) {
-  rectangleRGBA(engine->render, rect.pos_top_left.x, rect.pos_top_left.y,
-                rect.pos_top_left.x + rect.size.x,
-                rect.pos_top_left.y + rect.size.y, color.r, color.g, color.b,
-                color.a);
+  rectangleRGBA(engine->render, rect.ptl.x, rect.ptl.y, rect.ptl.x + rect.s.x,
+                rect.ptl.y + rect.s.y, color.r, color.g, color.b, color.a);
   SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, 0xFF);
 }
 
 void line_draw(line_t line, SDL_Color color) {
-  lineRGBA(engine->render, line.pos_one.x, line.pos_one.y, line.pos_two.x,
-           line.pos_two.y, color.r, color.g, color.b, color.a);
+  lineRGBA(engine->render, line.p1.x, line.p1.y, line.p2.x, line.p2.y, color.r,
+           color.g, color.b, color.a);
   SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, 0xFF);
 }

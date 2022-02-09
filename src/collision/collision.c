@@ -32,68 +32,66 @@ bool collision_point_point(point_t p1, point_t p2) {
 }
 
 bool collision_point_circle(point_t p, circle_t c) {
-  real_t distance = v2d_dist(p, c.pos_center);
+  real_t distance = v2d_dist(p, c.c);
 
-  if (distance <= c.radius) {
+  if (distance <= c.r) {
     return true;
   }
   return false;
 }
 
 bool collision_circle_circle(circle_t c1, circle_t c2) {
-  real_t distance = v2d_dist(c1.pos_center, c2.pos_center);
+  real_t distance = v2d_dist(c1.c, c2.c);
 
-  if (distance <= c1.radius + c2.radius) {
+  if (distance <= c1.r + c2.r) {
     return true;
   }
   return false;
 }
 
 bool collision_point_rect(point_t p, rect_t r) {
-  if (p.x >= r.pos_top_left.x && p.x <= r.pos_top_left.x + r.size.x &&
-      p.y >= r.pos_top_left.y && p.y <= r.pos_top_left.y + r.size.y) {
+  if (p.x >= r.ptl.x && p.x <= r.ptl.x + r.s.x && p.y >= r.ptl.y &&
+      p.y <= r.ptl.y + r.s.y) {
     return true;
   }
   return false;
 }
 
 bool collision_rect_rect(rect_t r1, rect_t r2) {
-  if (r1.pos_top_left.x + r1.size.x >= r2.pos_top_left.x &&
-      r1.pos_top_left.x <= r2.pos_top_left.x + r2.size.x &&
-      r1.pos_top_left.y + r1.size.y >= r2.pos_top_left.y &&
-      r1.pos_top_left.y <= r2.pos_top_left.y + r2.size.y) {
+  if (r1.ptl.x + r1.s.x >= r2.ptl.x && r1.ptl.x <= r2.ptl.x + r2.s.x &&
+      r1.ptl.y + r1.s.y >= r2.ptl.y && r1.ptl.y <= r2.ptl.y + r2.s.y) {
     return true;
   }
   return false;
 }
 
 bool collision_circle_rect(circle_t c, rect_t r) {
-  v2d_t test = c.pos_center;
+  v2d_t test = c.c;
 
-  if (c.pos_center.x < r.pos_top_left.x) {
-    test.x = r.pos_top_left.x;
-  } else if (c.pos_center.x > r.pos_top_left.x + r.size.x) {
-    test.x = r.pos_top_left.x + r.size.x;
+  if (c.c.x < r.ptl.x) {
+    test.x = r.ptl.x;
+  } else if (c.c.x > r.ptl.x + r.s.x) {
+    test.x = r.ptl.x + r.s.x;
   }
-  if (c.pos_center.y < r.pos_top_left.y) {
-    test.y = r.pos_top_left.y;
-  } else if (c.pos_center.y > r.pos_top_left.y + r.size.y) {
-    test.y = r.pos_top_left.y + r.size.y;
+  if (c.c.y < r.ptl.y) {
+    test.y = r.ptl.y;
+  } else if (c.c.y > r.ptl.y + r.s.y) {
+    test.y = r.ptl.y + r.s.y;
   }
 
-  real_t distance = v2d_dist(c.pos_center, test);
+  real_t distance = v2d_dist(c.c, test);
 
-  if (distance <= c.radius) {
+  if (distance <= c.r) {
     return true;
   }
   return false;
 }
 
 bool collision_line_point(line_t l, point_t p) {
-  real_t d1 = v2d_dist(p, l.pos_one);
-  real_t d2 = v2d_dist(p, l.pos_two);
+  real_t d1 = v2d_dist(p, l.p1);
+  real_t d2 = v2d_dist(p, l.p2);
 
-  real_t line_length = v2d_dist(l.pos_one, l.pos_two);
+  real_t line_length = v2d_dist(l.p1, l.p2);
 
   real_t buffer = 0.1;
 
@@ -104,38 +102,36 @@ bool collision_line_point(line_t l, point_t p) {
 }
 
 bool collision_line_circle(line_t l, circle_t c) {
-  bool inside1 = collision_point_circle(l.pos_one, c);
-  bool inside2 = collision_point_circle(l.pos_two, c);
+  bool inside1 = collision_point_circle(l.p1, c);
+  bool inside2 = collision_point_circle(l.p2, c);
   if (inside1 || inside2) {
     return true;
   }
 
-  real_t len = v2d_dist(l.pos_one, l.pos_two);
+  real_t len = v2d_dist(l.p1, l.p2);
 
-  v2d_t dot_tmp =
-      v2d_mult(v2d_sub(c.pos_center, l.pos_one), v2d_sub(l.pos_two, l.pos_one));
+  v2d_t dot_tmp = v2d_mult(v2d_sub(c.c, l.p1), v2d_sub(l.p2, l.p1));
   real_t dot = (dot_tmp.x + dot_tmp.y) / (len * len);
 
-  v2d_t closest =
-      v2d_add(l.pos_one, v2d_mult_sclr(v2d_sub(l.pos_two, l.pos_one), dot));
+  v2d_t closest = v2d_add(l.p1, v2d_mult_sclr(v2d_sub(l.p2, l.p1), dot));
 
   bool on_segment = collision_line_point(l, closest);
   if (!on_segment) {
     return false;
   }
 
-  real_t distance = v2d_dist(closest, c.pos_center);
+  real_t distance = v2d_dist(closest, c.c);
 
-  if (distance <= c.radius) {
+  if (distance <= c.r) {
     return true;
   }
   return false;
 }
 
 bool collision_line_line(line_t l1, line_t l2) {
-  v2d_t l1_sub = v2d_sub(l1.pos_two, l1.pos_one);
-  v2d_t l2_sub = v2d_sub(l2.pos_two, l2.pos_one);
-  v2d_t one_sub = v2d_sub(l1.pos_one, l2.pos_one);
+  v2d_t l1_sub = v2d_sub(l1.p2, l1.p1);
+  v2d_t l2_sub = v2d_sub(l2.p2, l2.p1);
+  v2d_t one_sub = v2d_sub(l1.p1, l2.p1);
 
   real_t ua = ((l2_sub.x) * (one_sub.y) - (l2_sub.y) * (one_sub.x)) /
               ((l2_sub.y) * (l1_sub.x) - (l2_sub.x) * (l1_sub.y));
@@ -151,17 +147,13 @@ bool collision_line_line(line_t l1, line_t l2) {
 
 bool collision_line_rect(line_t l, rect_t r) {
   bool left = collision_line_line(
-      l, line_init(r.pos_top_left.x, r.pos_top_left.y, r.pos_top_left.x,
-                   r.pos_top_left.y + r.size.y));
+      l, line_init(r.ptl.x, r.ptl.y, r.ptl.x, r.ptl.y + r.s.y));
   bool right = collision_line_line(
-      l, line_init(r.pos_top_left.x + r.size.x, r.pos_top_left.y,
-                   r.pos_top_left.x + r.size.x, r.pos_top_left.y + r.size.y));
+      l, line_init(r.ptl.x + r.s.x, r.ptl.y, r.ptl.x + r.s.x, r.ptl.y + r.s.y));
   bool top = collision_line_line(
-      l, line_init(r.pos_top_left.x, r.pos_top_left.y,
-                   r.pos_top_left.x + r.size.x, r.pos_top_left.y));
+      l, line_init(r.ptl.x, r.ptl.y, r.ptl.x + r.s.x, r.ptl.y));
   bool bottom = collision_line_line(
-      l, line_init(r.pos_top_left.x, r.pos_top_left.y + r.size.y,
-                   r.pos_top_left.x + r.size.x, r.pos_top_left.y + r.size.y));
+      l, line_init(r.ptl.x, r.ptl.y + r.s.y, r.ptl.x + r.s.x, r.ptl.y + r.s.y));
 
   if (left || right || top || bottom) {
     return true;

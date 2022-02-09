@@ -46,20 +46,20 @@ void game_init() {
 
   assets_texture(0, "assets/grumpy-cat.bmp");
   tile = tile_init(0, rect_init(100, 100, 60, 60));
-  tile->rect.pos_top_left = v2d_init(500, 250);
+  tile->rect.ptl = v2d_init(500, 250);
 
   sprite = sprite_init(3);
   sprite_tile(sprite, 0, rect_init(50, 50, 50, 50), 0, 0.4);
   sprite_tile(sprite, 0, rect_init(100, 100, 50, 50), 1, 0.4);
   sprite_tile(sprite, 0, rect_init(150, 150, 50, 50), 2, 0.7);
-  sprite->rect.pos_top_left = v2d_init(300, 250);
+  sprite->rect.ptl = v2d_init(300, 250);
 
   group = tilegroup_init(v2d_init(100, 100));
   tilegroup_tile(group, 0, rect_init(25, 25, 50, 50), v2d_zero, v2d_one, 0,
                  SDL_FLIP_NONE);
   tilegroup_tile(group, 0, rect_init(125, 125, 75, 75), v2d_init(25, 25),
                  v2d_one, 0, SDL_FLIP_NONE);
-  group->rect.pos_top_left = v2d_init(400, 200);
+  group->rect.ptl = v2d_init(400, 200);
   group->flip = SDL_FLIP_VERTICAL;
 
   music_play(0);
@@ -84,11 +84,10 @@ void game_fixed_update(sec_t delta) {
 
   if (tile->angle_degrees < 360) {
     tile->angle_degrees += 2;
-    group->rect.pos_top_left =
-        v2d_add(group->rect.pos_top_left, v2d_init(1, -1));
+    group->rect.ptl = v2d_add(group->rect.ptl, v2d_init(1, -1));
   } else {
     tile->angle_degrees = 0;
-    group->rect.pos_top_left = v2d_init(400, 200);
+    group->rect.ptl = v2d_init(400, 200);
     zoom_in = !zoom_in;
     if (music_paused()) {
       music_resume();

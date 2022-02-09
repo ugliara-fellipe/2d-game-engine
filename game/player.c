@@ -48,7 +48,7 @@ static void process_events(entity_t *entity, SDL_Event *event) {
 
 static void fixed_update(entity_t *entity, sec_t delta) {
   player_t *player = entity->aspect->context;
-  v2d_t temp = v2d_add(player->body.pos_top_left, player->direction);
+  v2d_t temp = v2d_add(player->body.ptl, player->direction);
 
   level_t *level = entity->parent->nodes[0]->aspect->context;
   if ((!collision_line_rect(level->map[1], player->body) &&
@@ -70,7 +70,7 @@ static void fixed_update(entity_t *entity, sec_t delta) {
     temp.x = temp.x - speed;
   }
 
-  player->body.pos_top_left = temp;
+  player->body.ptl = temp;
 }
 
 static void variable_update(entity_t *entity, sec_t delta) {}
@@ -78,8 +78,8 @@ static void variable_update(entity_t *entity, sec_t delta) {}
 static void render(entity_t *entity, sec_t delta) {
   player_t *player = entity->aspect->context;
   rect_t body = player->body;
-  body.size.x -= 1;
-  body.size.y -= 1;
+  body.s.x -= 1;
+  body.s.y -= 1;
   rect_draw(body, RGB_WHITE);
 }
 

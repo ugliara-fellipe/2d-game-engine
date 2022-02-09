@@ -36,8 +36,7 @@ void text_draw(integer_t index, rect_t dst_rect, SDL_Color color,
       TTF_RenderText_Solid(assets->font[index], msg, color);
   SDL_Texture *message =
       SDL_CreateTextureFromSurface(engine->render, surface_message);
-  SDL_Rect rect = {dst_rect.pos_top_left.x, dst_rect.pos_top_left.y, dst_rect.size.x,
-                   dst_rect.size.y};
+  SDL_Rect rect = {dst_rect.ptl.x, dst_rect.ptl.y, dst_rect.s.x, dst_rect.s.y};
   SDL_RenderCopy(engine->render, message, NULL, &rect);
   SDL_FreeSurface(surface_message);
   SDL_DestroyTexture(message);

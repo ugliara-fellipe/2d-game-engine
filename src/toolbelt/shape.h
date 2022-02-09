@@ -30,28 +30,26 @@ SOFTWARE.
 typedef v2d_t point_t;
 
 typedef struct circle_s {
-  v2d_t pos_center;
-  real_t radius;
+  v2d_t c;  // position center
+  real_t r; // radius
 } circle_t;
 
 typedef struct rect_s {
-  v2d_t pos_top_left;
-  v2d_t size;
+  v2d_t ptl; // position top left
+  v2d_t s;   // size
 } rect_t;
 
 typedef struct line_s {
-  v2d_t pos_one;
-  v2d_t pos_two;
+  v2d_t p1; // point one
+  v2d_t p2; // point two
 } line_t;
 
 point_t point_init(real_t x, real_t y);
 
-circle_t circle_init(real_t x_center, real_t y_center, real_t radius);
+circle_t circle_init(real_t cx, real_t cy, real_t r);
 
-rect_t rect_init(real_t x_top_left, real_t y_top_left, real_t width,
-                       real_t height);
+rect_t rect_init(real_t ptlx, real_t ptly, real_t w, real_t h);
 
-line_t line_init(real_t x_pos_one, real_t y_pos_one, real_t x_pos_two,
-                       real_t y_pos_two);
+line_t line_init(real_t p1x, real_t p1y, real_t p2x, real_t p2y);
 
 #endif
