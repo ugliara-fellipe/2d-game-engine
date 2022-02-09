@@ -36,7 +36,7 @@ typedef struct aspect_s {
   void (*fixed_update)(entity_t *entity, sec_t delta);
   void (*variable_update)(entity_t *entity, sec_t delta);
   void (*render)(entity_t *entity, sec_t delta);
-  void (*exit)(void *context);
+  void (*finish)(void *context);
 } aspect_t;
 
 aspect_t *aspect_init();

@@ -61,8 +61,10 @@ void entity_process_events(entity_t *entity, SDL_Event *event) {
   if (!entity->enable) {
     return;
   }
-  if (entity->aspect->process_events != NULL) {
-    entity->aspect->process_events(entity, event);
+  if (entity->aspect != NULL) {
+    if (entity->aspect->process_events != NULL) {
+      entity->aspect->process_events(entity, event);
+    }
   }
   for (integer_t index = 0; index < entity->nodes_amount; index++) {
     entity_process_events(entity->nodes[index], event);
@@ -73,8 +75,10 @@ void entity_fixed_update(entity_t *entity, sec_t delta) {
   if (!entity->enable) {
     return;
   }
-  if (entity->aspect->fixed_update != NULL) {
-    entity->aspect->fixed_update(entity, delta);
+  if (entity->aspect != NULL) {
+    if (entity->aspect->fixed_update != NULL) {
+      entity->aspect->fixed_update(entity, delta);
+    }
   }
   for (integer_t index = 0; index < entity->nodes_amount; index++) {
     entity_fixed_update(entity->nodes[index], delta);
@@ -85,8 +89,10 @@ void entity_variable_update(entity_t *entity, sec_t delta) {
   if (!entity->enable) {
     return;
   }
-  if (entity->aspect->variable_update != NULL) {
-    entity->aspect->variable_update(entity, delta);
+  if (entity->aspect != NULL) {
+    if (entity->aspect->variable_update != NULL) {
+      entity->aspect->variable_update(entity, delta);
+    }
   }
   for (integer_t index = 0; index < entity->nodes_amount; index++) {
     entity_variable_update(entity->nodes[index], delta);
@@ -97,8 +103,10 @@ void entity_render(entity_t *entity, sec_t delta) {
   if (!entity->enable) {
     return;
   }
-  if (entity->aspect->render != NULL) {
-    entity->aspect->render(entity, delta);
+  if (entity->aspect != NULL) {
+    if (entity->aspect->render != NULL) {
+      entity->aspect->render(entity, delta);
+    }
   }
   for (integer_t index = 0; index < entity->nodes_amount; index++) {
     entity_render(entity->nodes[index], delta);

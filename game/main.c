@@ -23,6 +23,8 @@ SOFTWARE.
 */
 
 #include "game.h"
+#include "level.h"
+#include "player.h"
 
 const char *game_name() { return "Game"; }
 integer_t game_font_amount() { return 0; }
@@ -30,11 +32,12 @@ integer_t game_music_amount() { return 1; }
 integer_t game_sound_amount() { return 1; }
 integer_t game_texture_amount() { return 1; };
 
-static int exit_count = 1000;
 static tile_t *tile = NULL;
 static sprite_t *sprite = NULL;
 static tilegroup_t *group = NULL;
 static bool zoom_in = true;
+
+static entity_t *scene;
 
 void game_init() {
   trace_debug("game_init\n");
@@ -60,75 +63,56 @@ void game_init() {
   group->flip = SDL_FLIP_VERTICAL;
 
   music_play(0);
+
+  scene = entity_init(2);
+  entity_node(scene, 0, level_init());
+  entity_node(scene, 1, player_init());
 }
 
 void game_process_events(SDL_Event *event) {
-  switch (event->type) {
-  case SDL_KEYDOWN:
-    switch (event->key.keysym.sym) {
-    case SDLK_UP:
-      sprite->rect.pos_top_left =
-          v2d_add(sprite->rect.pos_top_left, v2d_init(0, -3));
-      break;
-    case SDLK_DOWN:
-      sprite->rect.pos_top_left =
-          v2d_add(sprite->rect.pos_top_left, v2d_init(0, 3));
-      break;
-    case SDLK_LEFT:
-      sprite->rect.pos_top_left =
-          v2d_add(sprite->rect.pos_top_left, v2d_init(-3, 0));
-      break;
-    case SDLK_RIGHT:
-      sprite->rect.pos_top_left =
-          v2d_add(sprite->rect.pos_top_left, v2d_init(3, 0));
-      break;
-    case SDLK_q:
-      engine->running = false;
-      break;
-    }
-    break;
-
-  default:
-    break;
+  trace_debug("game_process_events\n");
+  if (event->type == SDL_KEYDOWN && event->key.keysym.sym == SDLK_q) {
+    engine->running = false;
+    return;
   }
+  entity_process_events(scene, event);
 }
 
 void game_fixed_update(sec_t delta) {
   trace_debug("game_fixed_update:    delta: %f s\n", delta);
-  if (exit_count == 0) {
-    engine->running = false;
+  entity_fixed_update(scene, delta);
+
+  if (tile->angle_degrees < 360) {
+    tile->angle_degrees += 2;
+    group->rect.pos_top_left =
+        v2d_add(group->rect.pos_top_left, v2d_init(1, -1));
   } else {
-    exit_count--;
-    if (tile->angle_degrees < 360) {
-      tile->angle_degrees += 2;
-      group->rect.pos_top_left =
-          v2d_add(group->rect.pos_top_left, v2d_init(1, -1));
+    tile->angle_degrees = 0;
+    group->rect.pos_top_left = v2d_init(400, 200);
+    zoom_in = !zoom_in;
+    if (music_paused()) {
+      music_resume();
     } else {
-      tile->angle_degrees = 0;
-      group->rect.pos_top_left = v2d_init(400, 200);
-      zoom_in = !zoom_in;
-      if (music_paused()) {
-        music_resume();
-      } else {
-        music_pause();
-      }
-      sound_play(0);
+      music_pause();
     }
-    if (zoom_in) {
-      tile->scala = v2d_lerp(tile->scala, v2d_init(0.2, 0.2), 0.01);
-    } else {
-      tile->scala = v2d_lerp(tile->scala, v2d_init(4, 4), 0.01);
-    }
+    sound_play(0);
+  }
+  if (zoom_in) {
+    tile->scala = v2d_lerp(tile->scala, v2d_init(0.2, 0.2), 0.01);
+  } else {
+    tile->scala = v2d_lerp(tile->scala, v2d_init(4, 4), 0.01);
   }
 }
 
 void game_variable_update(sec_t delta) {
   trace_debug("game_variable_update: delta: %f s\n", delta);
+  entity_variable_update(scene, delta);
   sprite_update(sprite, delta);
 }
 
 void game_render(sec_t delta) {
   trace_debug("game_render:          delta: %f s\n", delta);
+  entity_render(scene, delta);
   SDL_Rect dst_rect = {0, 0, 266, 200};
   SDL_RenderCopy(engine->render, assets->texture[0], NULL, &dst_rect);
   tilegroup_draw(group);
@@ -159,8 +143,14 @@ void game_render(sec_t delta) {
     line_draw(line_init(300, 300, 400, 400), RGB_WHITE);
   }
 
-  if (collision_line_circle(line_init(300, 300, 400, 400), circle_init(350,350,30))) {
+  if (collision_line_circle(line_init(300, 300, 400, 400),
+                            circle_init(350, 350, 30))) {
     circle_draw(circle_init(350, 350, 30), RGB_RED);
+  }
+
+  if (collision_line_line(line_init(300, 300, 400, 400),
+                          line_init(300, 400, 400, 300))) {
+    line_draw(line_init(300, 400, 400, 300), RGB_GREEN);
   }
 }
 
@@ -169,5 +159,6 @@ void game_exit() {
   tile_exit(tile);
   sprite_exit(sprite);
   tilegroup_exit(group);
+  entity_exit(scene);
   trace_debug("game_exit\n");
 }

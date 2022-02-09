@@ -22,27 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "entity/aspect.h"
+#ifndef LEVEL_H
+#define LEVEL_H
 
-aspect_t *aspect_init() {
-  aspect_t *aspect = calloc(1, sizeof(aspect_t));
-  aspect->context = NULL;
-  aspect->process_events = NULL;
-  aspect->fixed_update = NULL;
-  aspect->variable_update = NULL;
-  aspect->render = NULL;
-  aspect->finish = NULL;
-  return aspect;
-}
+#include "game.h"
 
-void aspect_exit(aspect_t *aspect) {
-  if (aspect->finish != NULL) {
-    aspect->finish(aspect->context);
-  }
+typedef struct level_s{
+    line_t map[6];
+} level_t;
 
-  if (aspect->context != NULL) {
-    free(aspect->context);
-  }
+entity_t * level_init();
 
-  free(aspect);
-}
+#endif

@@ -22,27 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "entity/aspect.h"
+#ifndef PLAYER_H
+#define PLAYER_H
 
-aspect_t *aspect_init() {
-  aspect_t *aspect = calloc(1, sizeof(aspect_t));
-  aspect->context = NULL;
-  aspect->process_events = NULL;
-  aspect->fixed_update = NULL;
-  aspect->variable_update = NULL;
-  aspect->render = NULL;
-  aspect->finish = NULL;
-  return aspect;
-}
+#include "game.h"
 
-void aspect_exit(aspect_t *aspect) {
-  if (aspect->finish != NULL) {
-    aspect->finish(aspect->context);
-  }
+typedef struct player_s{
+    rect_t body;
+    v2d_t direction;
+} player_t;
 
-  if (aspect->context != NULL) {
-    free(aspect->context);
-  }
+entity_t * player_init();
 
-  free(aspect);
-}
+#endif
