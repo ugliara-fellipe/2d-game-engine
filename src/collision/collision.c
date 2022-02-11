@@ -146,16 +146,20 @@ bool collision_line_line(line_t l1, line_t l2) {
 }
 
 bool collision_line_rect(line_t l, rect_t r) {
-  bool left = collision_line_line(
-      l, line_init(r.ptl.x, r.ptl.y, r.ptl.x, r.ptl.y + r.s.y));
-  bool right = collision_line_line(
-      l, line_init(r.ptl.x + r.s.x, r.ptl.y, r.ptl.x + r.s.x, r.ptl.y + r.s.y));
-  bool top = collision_line_line(
-      l, line_init(r.ptl.x, r.ptl.y, r.ptl.x + r.s.x, r.ptl.y));
-  bool bottom = collision_line_line(
-      l, line_init(r.ptl.x, r.ptl.y + r.s.y, r.ptl.x + r.s.x, r.ptl.y + r.s.y));
+  real_t xw = r.ptl.x + r.s.x;
+  real_t yh = r.ptl.y + r.s.y;
+  real_t w_half = r.s.x / 2;
+  real_t h_half = r.s.y / 2;
 
-  if (left || right || top || bottom) {
+  bool left = collision_line_line(l, line_init(r.ptl.x, r.ptl.y, r.ptl.x, yh));
+  bool right = collision_line_line(l, line_init(xw, r.ptl.y, xw, yh));
+  bool top = collision_line_line(l, line_init(r.ptl.x, r.ptl.y, xw, r.ptl.y));
+  bool bottom = collision_line_line(l, line_init(r.ptl.x, yh, xw, yh));
+
+  bool p1_inside = collision_point_rect(l.p1, r);
+  bool p2_inside = collision_point_rect(l.p2, r);
+
+  if (left || right || top || bottom || p1_inside || p2_inside) {
     return true;
   }
   return false;
