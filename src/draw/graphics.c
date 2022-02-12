@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include "draw/graphics.h"
 #include "engine/engine.h"
-#include <SDL2/SDL2_gfxPrimitives.h>
 
 void point_draw(point_t point, SDL_Color color) {
   filledCircleRGBA(engine->render, point.x, point.y, 3, color.r, color.g,

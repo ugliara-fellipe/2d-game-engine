@@ -25,6 +25,7 @@ SOFTWARE.
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include "SDL2/SDL2_gfxPrimitives.h"
 #include "draw/color.h"
 #include "toolbelt/shape.h"
 #include "toolbelt/vector2d.h"
