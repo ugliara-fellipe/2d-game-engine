@@ -35,6 +35,7 @@ tile_t *tile_init(integer_t texture_index, rect_t src_rect) {
                         SDL_TEXTUREACCESS_TARGET, src_rect.s.x, src_rect.s.y);
 
   // Attach the texture
+  SDL_Texture *current = SDL_GetRenderTarget(engine->render);
   SDL_SetRenderTarget(engine->render, tile->texture);
 
   // Now render to the texture
@@ -46,7 +47,7 @@ tile_t *tile_init(integer_t texture_index, rect_t src_rect) {
                  &dst_rect);
 
   // Detach the texture
-  SDL_SetRenderTarget(engine->render, NULL);
+  SDL_SetRenderTarget(engine->render, current);
 
   tile->rect = rect_init(0, 0, src_rect.s.x, src_rect.s.y);
   tile->scala = v2d_one;

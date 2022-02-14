@@ -64,6 +64,20 @@ static void engine_init() {
     exit(EXIT_FAILURE);
   }
 
+  int ww, wh;
+  SDL_GetWindowSize(engine->window, &ww, &wh);
+  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00,
+                         SDL_ALPHA_TRANSPARENT);
+  for (integer_t k = 0; k < LAYERS_SIZE; k++) {
+    engine->layers[k] =
+        SDL_CreateTexture(engine->render, SDL_PIXELFORMAT_RGBA8888,
+                          SDL_TEXTUREACCESS_TARGET, ww, wh);
+    SDL_SetTextureBlendMode(engine->layers[k], SDL_BLENDMODE_BLEND);
+    SDL_SetRenderTarget(engine->render, engine->layers[k]);
+    SDL_RenderClear(engine->render);
+  }
+  SDL_SetRenderTarget(engine->render, engine->layers[2]);
+
   if (TTF_Init() != 0) {
     trace_crash("TTF_Init Error: %s\n", SDL_GetError());
     engine_exit();
@@ -89,6 +103,9 @@ void engine_exit() {
   }
   if (TTF_WasInit()) {
     TTF_Quit();
+  }
+  for (integer_t k = 0; k < LAYERS_SIZE; k++) {
+    SDL_DestroyTexture(engine->layers[k]);
   }
   if (engine->render != NULL) {
     SDL_DestroyRenderer(engine->render);
@@ -150,9 +167,26 @@ int main(int argc, char *argv[]) {
     }
 
     // Render
-    SDL_RenderClear(engine->render);
+    SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00,
+                           SDL_ALPHA_TRANSPARENT);
+    for (integer_t k = 0; k < LAYERS_SIZE; k++) {
+      SDL_SetRenderTarget(engine->render, engine->layers[k]);
+      SDL_RenderClear(engine->render);
+    }
+
+    SDL_SetRenderTarget(engine->render, engine->layers[2]);
+
     game_render(timing_calc_delta_render());
     monitor_fps_render();
+
+    SDL_SetRenderTarget(engine->render, NULL);
+    SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(engine->render);
+
+    for (integer_t k = 0; k < LAYERS_SIZE; k++) {
+      SDL_RenderCopy(engine->render, engine->layers[k], NULL, NULL);
+    }
+
     SDL_RenderPresent(engine->render);
   }
 

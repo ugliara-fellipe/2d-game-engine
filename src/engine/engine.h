@@ -29,9 +29,12 @@ SOFTWARE.
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
+#define LAYERS_SIZE 5
+
 typedef struct engine_s {
   SDL_Window *window;
   SDL_Renderer *render;
+  SDL_Texture *layers[LAYERS_SIZE];
   bool running;
   real_t update_rate;
   bool timing_resync;

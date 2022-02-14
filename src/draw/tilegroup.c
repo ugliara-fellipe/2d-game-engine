@@ -33,9 +33,10 @@ tilegroup_t *tilegroup_init(v2d_t size) {
       SDL_CreateTexture(engine->render, SDL_PIXELFORMAT_RGBA8888,
                         SDL_TEXTUREACCESS_TARGET, size.x, size.y);
 
+  SDL_Texture *current = SDL_GetRenderTarget(engine->render);
   SDL_SetRenderTarget(engine->render, tilegroup->texture);
   SDL_RenderClear(engine->render);
-  SDL_SetRenderTarget(engine->render, NULL);
+  SDL_SetRenderTarget(engine->render, current);
 
   tilegroup->rect = rect_init(0, 0, size.x, size.y);
   tilegroup->scala = v2d_one;
@@ -54,6 +55,7 @@ void tilegroup_tile(tilegroup_t *tilegroup, integer_t texture_index,
                     rect_t src_rect, v2d_t dst_pos, v2d_t scala,
                     real_t angle_degrees, SDL_RendererFlip flip) {
   // Attach the texture
+  SDL_Texture *current = SDL_GetRenderTarget(engine->render);
   SDL_SetRenderTarget(engine->render, tilegroup->texture);
 
   // Now render to the texture
@@ -66,7 +68,7 @@ void tilegroup_tile(tilegroup_t *tilegroup, integer_t texture_index,
                    &sdl_src_rect, &dst_rect, angle_degrees, NULL, flip);
 
   // Detach the texture
-  SDL_SetRenderTarget(engine->render, NULL);
+  SDL_SetRenderTarget(engine->render, current);
 }
 
 void tilegroup_draw(tilegroup_t *tilegroup) {
