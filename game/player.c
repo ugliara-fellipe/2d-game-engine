@@ -80,7 +80,7 @@ static void render(entity_t *entity, sec_t delta) {
   rect_t body = player->body;
   body.s.x -= 1;
   body.s.y -= 1;
-  rect_draw(body, RGB_WHITE);
+  rect_draw(body, RGB_WHITE, true);
 }
 
 static void finish(void *context) {}

@@ -125,15 +125,15 @@ void game_render(sec_t delta) {
   }
 
   if (collision_circle_rect(circle_init(150, 300, 15), player->body)) {
-    circle_draw(circle_init(150, 300, 15), RGB_RED);
+    circle_draw(circle_init(150, 300, 15), RGB_RED, false);
   } else {
-    circle_draw(circle_init(150, 300, 15), RGB_WHITE);
+    circle_draw(circle_init(150, 300, 15), RGB_WHITE, true);
   }
 
   if (collision_rect_rect(rect_init(200, 220, 30, 30), player->body)) {
-    rect_draw(rect_init(200, 220, 30, 30), RGB_RED);
+    rect_draw(rect_init(200, 220, 30, 30), RGB_RED, false);
   } else {
-    rect_draw(rect_init(200, 220, 30, 30), RGB_WHITE);
+    rect_draw(rect_init(200, 220, 30, 30), RGB_WHITE, false);
   }
 
   if (collision_line_rect(line_init(300, 300, 400, 400), player->body)) {
@@ -144,7 +144,7 @@ void game_render(sec_t delta) {
 
   if (collision_line_circle(line_init(300, 300, 400, 400),
                             circle_init(350, 350, 30))) {
-    circle_draw(circle_init(350, 350, 30), RGB_BLUE);
+    circle_draw(circle_init(350, 350, 30), RGB_BLUE, false);
   }
 
   if (collision_line_line(line_init(300, 300, 400, 400),

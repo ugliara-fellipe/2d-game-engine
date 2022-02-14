@@ -28,23 +28,37 @@ SOFTWARE.
 void point_draw(point_t point, SDL_Color color) {
   filledCircleRGBA(engine->render, point.x, point.y, 3, color.r, color.g,
                    color.b, color.a);
-  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
+  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00,
+                         SDL_ALPHA_TRANSPARENT);
 }
 
-void circle_draw(circle_t circle, SDL_Color color) {
-  circleRGBA(engine->render, circle.c.x, circle.c.y, circle.r, color.r, color.g,
-             color.b, color.a);
-  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
+void circle_draw(circle_t circle, SDL_Color color, bool filled) {
+  if (filled) {
+    filledCircleRGBA(engine->render, circle.c.x, circle.c.y, circle.r, color.r,
+                     color.g, color.b, color.a);
+  } else {
+    circleRGBA(engine->render, circle.c.x, circle.c.y, circle.r, color.r,
+               color.g, color.b, color.a);
+  }
+  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00,
+                         SDL_ALPHA_TRANSPARENT);
 }
 
-void rect_draw(rect_t rect, SDL_Color color) {
-  rectangleRGBA(engine->render, rect.ptl.x, rect.ptl.y, rect.ptl.x + rect.s.x,
-                rect.ptl.y + rect.s.y, color.r, color.g, color.b, color.a);
-  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
+void rect_draw(rect_t rect, SDL_Color color, bool filled) {
+  if (filled) {
+    boxRGBA(engine->render, rect.ptl.x, rect.ptl.y, rect.ptl.x + rect.s.x,
+            rect.ptl.y + rect.s.y, color.r, color.g, color.b, color.a);
+  } else {
+    rectangleRGBA(engine->render, rect.ptl.x, rect.ptl.y, rect.ptl.x + rect.s.x,
+                  rect.ptl.y + rect.s.y, color.r, color.g, color.b, color.a);
+  }
+  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00,
+                         SDL_ALPHA_TRANSPARENT);
 }
 
 void line_draw(line_t line, SDL_Color color) {
   lineRGBA(engine->render, line.p1.x, line.p1.y, line.p2.x, line.p2.y, color.r,
            color.g, color.b, color.a);
-  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
+  SDL_SetRenderDrawColor(engine->render, 0x00, 0x00, 0x00,
+                         SDL_ALPHA_TRANSPARENT);
 }
