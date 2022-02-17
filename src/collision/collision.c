@@ -148,8 +148,6 @@ bool collision_line_line(line_t l1, line_t l2) {
 bool collision_line_rect(line_t l, rect_t r) {
   real_t xw = r.ptl.x + r.s.x;
   real_t yh = r.ptl.y + r.s.y;
-  real_t w_half = r.s.x / 2;
-  real_t h_half = r.s.y / 2;
 
   bool left = collision_line_line(l, line_init(r.ptl.x, r.ptl.y, r.ptl.x, yh));
   bool right = collision_line_line(l, line_init(xw, r.ptl.y, xw, yh));
