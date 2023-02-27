@@ -31,7 +31,13 @@ make
 Execute the command above to run the sample after compiler it.
 
 ```bash
-./build/game
+./build/gameone
+```
+
+or
+
+```bash
+./build/gametwo
 ```
 
 # Modules Brief
